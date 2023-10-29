@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:33:41 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/29 22:46:28 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/30 00:29:15 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,53 @@
 # include "nm.h"
 
 
-struct filedata_s	*read_file(int fd)
+void	exit_free(struct filedata_s	*binary)
 {
-	struct filedata_s	*binary;
-
-	if ((binary = malloc(sizeof(struct filedata_s *))) == NULL) {
-		ft_printf("");
-		perror("");
-		return NULL;
-	}
-	(void)fd;
-
-//	fstat(int fd, struct stat *statbuf);
-	return NULL;
+	if (binary && binary->file)
+		free(binary->file);
+	if (binary)
+		free(binary);
 }
 
 
-struct filedata_s	*open_file(char *filename)
+void	err_file(char *filename)
+{
+	ft_dprintf(2, "ft_nm: '%s': ", filename);
+	perror(NULL);
+}
+
+
+int	read_file(int fd, struct filedata_s *binary)
+{
+	int rd;
+
+	if (fstat(fd, &binary->statbuf) < 0)
+		goto err;
+	if ((binary->file = malloc(binary->statbuf.st_size + 1)) == NULL)
+		goto err;
+	if ((rd = read(fd, binary->file, binary->statbuf.st_size)) < 0)
+		goto err;
+	binary->file[rd] = '\0';
+	return SUCCESS;
+err:
+	return FAILURE;
+}
+
+
+int	open_file(struct filedata_s **binary, char *filename)
 {
 	int	fd;
 
-	if ((fd = open(filename, O_RDONLY)) < 0) {
-		ft_dprintf(2, "ft_nm: '%s': ", filename);
-		perror(NULL);
-		exit(1);
-	}
-	
-	
-	return NULL;
+	if ((fd = open(filename, O_RDONLY)) < 0)
+		goto exit_failure;
+	if ((*binary = malloc(sizeof(struct filedata_s))) == NULL)
+		goto exit_failure;
+	(*binary)->file = NULL;
+	if (read_file(fd, *binary) == FAILURE)
+		goto exit_failure;
+	close(fd);
+	return SUCCESS;
+exit_failure:
+	err_file(filename);
+	return FAILURE;
 }

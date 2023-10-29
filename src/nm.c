@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:07:46 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/29 22:01:10 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/30 00:32:01 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,16 @@
 
 void	nm(char *filename)
 {
-	open_file(filename);
+	struct filedata_s	*binary = NULL;
+
+	if (open_file(&binary, filename) == FAILURE)
+		goto exit_failure;
+	goto exit_success;
+exit_failure:
+	exit_free(binary);
+	exit(1);
+exit_success:
+	exit_free(binary);
 }
 
 

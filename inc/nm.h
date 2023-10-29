@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:09:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/29 22:23:11 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/30 00:24:29 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,24 @@
 # include <stdio.h>
 # include <string.h>
 # include <errno.h>
+# include <stdint.h>
 # include "libft.h"
 # include "ft_printf.h"
 
 
+# define SUCCESS 0
+# define FAILURE -1
+
+
+
 struct filedata_s {
-	struct stat	*statbuf;
-	char		*file;
+	struct stat	statbuf;
+	uint8_t		*file;
 };
 
 
-struct filedata_s	*open_file(char *filename);
+int		open_file(struct filedata_s **binary, char *filename);
+void	exit_free(struct filedata_s	*binary);
 
 
 #endif
