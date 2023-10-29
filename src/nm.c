@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:07:46 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/30 00:32:01 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/30 00:35:23 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@ exit_success:
 
 int	main(int ac, char **av)
 {
-	if (ac < 2) {
+	if (ac < 2)
 		nm("a.out");
-	}
-	for (int i = 1; i < ac; i++)
+	for (int i = 1; i < ac; i++) {
+		if (ac > 2)
+			ft_printf("\n%s:\n", av[i]);
 		nm(av[i]);
+	}
 	return 0;
 }
