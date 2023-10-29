@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_3.c                                          :+:      :+:    :+:   */
+/*   utils_3.c                                       :+:       :+: :+: :+:    */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amahla <amahla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 13:01:01 by amahla            #+#    #+#             */
-/*   Updated: 2022/05/04 12:40:12 by amahla           ###   ########.fr       */
+/*   Updated: 2023/10/29 22:36:41 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,11 @@ int	ptrlen(unsigned long long nb)
 	return (i);
 }
 
-void	ft_putstr_len(char *str, int len)
+void	ft_putstr_len(int fd, char *str, int len)
 {
 	int	i;
 
 	i = 0;
 	while (str && i < len)
-		write(1, str + i++, 1);
+		write(fd, str + i++, 1);
 }

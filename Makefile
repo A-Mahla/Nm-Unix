@@ -6,7 +6,7 @@
 #    By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+       #
 #                                              +#+    +#+   +#+     +#+        #
 #    Created: 2023/10/17 02:01:51 by amahla  #+#      #+#  #+#     #+#         #
-#    Updated: 2023/10/29 21:13:05 by amahla ###       ########     ########    #
+#    Updated: 2023/10/29 21:20:42 by amahla ###       ########     ########    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,9 @@ INC		:=	-I libft/libft/includes -I inc
 LIB		:=	-L libft -lft
 OUTDIR 	:=	obj
 SRCDIR	:=	src
-SRC		:=	$(addprefix $(SRCDIR)/,	main.c)
+SRC		:=	$(addprefix $(SRCDIR)/,	nm.c 		\
+									open_file.c	\
+									)
 OBJ		:=	$(SRC:.c=.o)
 DEP 	:=	$(SRC:.c=.d)
 RM		:=	rm -rf

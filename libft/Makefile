@@ -64,6 +64,7 @@ SRC		:= 	ft_itoa.c				\
 											ft_print_hex.c 		\
 											ft_print_uint.c	 	\
 											ft_print_int.c  	\
+											ft_dprintf.c	 	\
 											ft_printf.c	 		) \
 			$(addprefix 	ft_getline/, 	ft_getline.c 	\
 											ft_getline_utils1.c 	\

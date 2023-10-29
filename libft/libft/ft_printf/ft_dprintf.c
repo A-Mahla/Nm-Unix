@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                     :+:       :+: :+: :+:    */
+/*   ft_dprintf.c                                    :+:       :+: :+: :+:    */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amahla <amahla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 12:59:27 by amahla            #+#    #+#             */
-/*   Updated: 2023/10/29 22:36:51 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/29 22:41:46 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"ft_printf.h"
 
-void	init_flag(t_flag *fg)
-{
-	fg->minus = 0;
-	fg->zero = 0;
-	fg->point = 0;
-	fg->hash = 0;
-	fg->space = 0;
-	fg->plus = 0;
-	fg->width = 0;
-	fg->precision = 0;
-	fg->nbrlen = 0;
-}
-
-int	process_print(va_list ap, char c, t_flag *fg)
+int	fprocess_print(int fd, va_list ap, char c, t_flag *fg)
 {
 	char	*str;
 	int		len;
@@ -47,42 +34,14 @@ int	process_print(va_list ap, char c, t_flag *fg)
 		str = ft_print_pct();
 	if (!len)
 		len = ft_strlen(str);
-	ft_putstr_len(1, str, len);
+	ft_putstr_len(fd, str, len);
 	init_flag(fg);
 	if (str)
 		free(str);
 	return (len);
 }
 
-void	process_format(char *str, t_flag *fg, int i)
-{
-	while (is_flag(*(str + i)) || ft_isdigit(*(str + i)))
-	{
-		if (*(str + i) == '-')
-			fg->minus = 1;
-		else if (*(str + i) == '0')
-			fg->zero = 1;
-		else if (*(str + i) == '.')
-			fg->point = 1;
-		else if (*(str + i) == '#')
-			fg->hash = 2;
-		else if (*(str + i) == ' ')
-			fg->space = 1;
-		else if (*(str + i) == '+')
-			fg->plus = 1;
-		if (is_flag(*(str + i)))
-			i++;
-		if (ft_isdigit(*(str + i)) && *(str + i - 1) == '.')
-			fg->precision = ft_atoi(str + i);
-		else if (*(str + i) >= '1' && *(str + i) <= '9')
-			fg->width = ft_atoi(str + i);
-		if (*(str + i) != '0')
-			while (*(str + i) && ft_isdigit(*(str + i)))
-				i++;
-	}
-}
-
-void	process(va_list ap, char *str, int *count)
+void	fprocess(int fd, va_list ap, char *str, int *count)
 {
 	int		i;
 	int		y;
@@ -99,7 +58,7 @@ void	process(va_list ap, char *str, int *count)
 			while (*(str + i) && !is_conv(str[i]))
 				i++;
 			if (*(str + i) && is_conv(str[i]))
-				*count = *count + process_print(ap, *(str + i++), &fg);
+				*count = *count + fprocess_print(fd, ap, *(str + i++), &fg);
 		}
 		else
 		{
@@ -109,14 +68,14 @@ void	process(va_list ap, char *str, int *count)
 	}
 }
 
-int	ft_printf(const char *format, ...)
+int	ft_dprintf(int fd, const char *format, ...)
 {
 	va_list	ap;
 	int		count;
 
 	count = 0;
 	va_start(ap, format);
-	process(ap, (char *)format, &count);
+	fprocess(fd, ap, (char *)format, &count);
 	va_end(ap);
 	return (count);
 }

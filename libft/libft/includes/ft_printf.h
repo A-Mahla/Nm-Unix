@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_printf.h                                     :+:       :+: :+: :+:    */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amahla <amahla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 13:01:30 by amahla            #+#    #+#             */
-/*   Updated: 2022/05/09 12:20:00 by amahla           ###   ########.fr       */
+/*   Updated: 2023/10/29 22:42:00 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,12 @@ typedef struct s_flag
 }				t_flag;
 
 //		ft_printf.c
+void	init_flag(t_flag *fg);
+void	process_format(char *str, t_flag *fg, int i);
 int		ft_printf(const char *format, ...);
+
+//		ft_dprintf.c
+int		ft_dprintf(int fd, const char *format, ...);
 
 //		ft_print_str_char.c
 char	*ft_printf_char(t_flag *fg, char c, int	*len);
@@ -74,7 +79,7 @@ int		ulen(unsigned int nb);
 int		ilen(int n);
 int		xlen(int n);
 int		ptrlen(unsigned long long nb);
-void	ft_putstr_len(char *str, int len);
+void	ft_putstr_len(int fd, char *str, int len);
 
 //		utils_4.c
 void	puthex(int nb, int size, char *res);

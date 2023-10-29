@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   main.c                                          :+:       :+: :+: :+:    */
+/*   nm.c                                            :+:       :+: :+: :+:    */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:07:46 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/29 21:14:17 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/29 22:01:10 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "nm.h"
 
-void	nm(void)
+
+void	nm(char *filename)
 {
-	return;
+	open_file(filename);
 }
 
-int	main(void)
+
+int	main(int ac, char **av)
 {
-	nm();
+	if (ac < 2) {
+		nm("a.out");
+	}
+	for (int i = 1; i < ac; i++)
+		nm(av[i]);
 	return 0;
 }
