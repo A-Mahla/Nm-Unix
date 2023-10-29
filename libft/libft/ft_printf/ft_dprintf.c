@@ -6,7 +6,7 @@
 /*   By: amahla <amahla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 12:59:27 by amahla            #+#    #+#             */
-/*   Updated: 2023/10/29 22:41:46 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/29 22:47:31 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	fprocess(int fd, va_list ap, char *str, int *count)
 		}
 		else
 		{
-			write(1, str + i++, 1);
+			write(fd, str + i++, 1);
 			(*count)++;
 		}
 	}

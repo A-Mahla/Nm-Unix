@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:33:41 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/29 22:25:09 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/29 22:46:28 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ struct filedata_s	*open_file(char *filename)
 	int	fd;
 
 	if ((fd = open(filename, O_RDONLY)) < 0) {
-		ft_printf("ft_nm: '%s': ", filename);
+		ft_dprintf(2, "ft_nm: '%s': ", filename);
 		perror(NULL);
 		exit(1);
 	}
