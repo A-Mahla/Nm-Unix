@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:09:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/30 00:24:29 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/31 00:26:52 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <stdio.h>
 # include <string.h>
 # include <errno.h>
+# include <stdbool.h>
+# include <elf.h>
 # include <stdint.h>
 # include "libft.h"
 # include "ft_printf.h"
@@ -29,17 +31,24 @@
 
 # define SUCCESS 0
 # define FAILURE -1
-
+//# define EI_NIDENT 16 TO DELETE IF NOT USED
+# define ELF_MAGIC_SIZE 4
+# define ELF_MAGIC "\x7F\x45\x4C\x46"
 
 
 struct filedata_s {
 	struct stat	statbuf;
-	uint8_t		*file;
+	void		*file;
+	char		*name;
+	long int	size;
+	uint8_t		ei_class;
 };
 
 
 int		open_file(struct filedata_s **binary, char *filename);
-void	exit_free(struct filedata_s	*binary);
+int		parse_file(int ac, struct filedata_s *binary);
+int		parse_class32(struct filedata_s *binary);
+int		parse_class64(struct filedata_s *binary);
 
 
 #endif
