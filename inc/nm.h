@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:09:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/31 00:26:52 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/01 01:55:42 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ struct filedata_s {
 	struct stat	statbuf;
 	void		*file;
 	char		*name;
-	long int	size;
+	long long int	size;
 	uint8_t		ei_class;
 };
 
@@ -49,6 +49,7 @@ int		open_file(struct filedata_s **binary, char *filename);
 int		parse_file(int ac, struct filedata_s *binary);
 int		parse_class32(struct filedata_s *binary);
 int		parse_class64(struct filedata_s *binary);
+void	err_parse(char *filename);
 
 
 #endif

@@ -6,7 +6,7 @@
 #    By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+       #
 #                                              +#+    +#+   +#+     +#+        #
 #    Created: 2023/10/17 02:01:51 by amahla  #+#      #+#  #+#     #+#         #
-#    Updated: 2023/10/31 00:25:58 by amahla ###       ########     ########    #
+#    Updated: 2023/11/01 01:05:10 by amahla ###       ########     ########    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ LIB		:=	-L libft -lft
 OUTDIR 	:=	obj
 SRCDIR	:=	src
 SRC		:=	$(addprefix $(SRCDIR)/,	nm.c 			\
-									open_file.c		\
-									parse_file.c	\
+									file_reader.c	\
+									file_parser.c	\
 									parse_class32.c	\
 									parse_class64.c	\
 									)
