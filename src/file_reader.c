@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:33:41 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/01 01:42:08 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/02 15:47:06 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	read_file(int fd, struct filedata_s *binary)
 		goto err;
 	if (binary->statbuf.st_size == 0)
 		goto exit_failure;
-	if ((binary->file = malloc(binary->statbuf.st_size + 1)) == NULL) // + 1bytes to delete if not used
+	if ((binary->file = malloc(binary->statbuf.st_size)) == NULL)
 		goto err;
 	if ((rd = read(fd, binary->file, 64)) < 0)
 		goto err;
@@ -61,7 +61,6 @@ int	read_file(int fd, struct filedata_s *binary)
 		binary->size += rd;
 	if (rd < 0)
 		goto err;
-//	binary->file[rd] = '\0'; TO DELETE IF NOT USED
 	return SUCCESS;
 err:
 	err_file(binary->name);
