@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/03 15:34:33 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/03 16:22:26 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 bool	check_header64(long int real_size, Elf64_Ehdr *ehdr);
 int		parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary);
-int		alloc_ptrsym64(struct filedata_s *binary, size_t size);
+int		alloc_ptrsym64(struct filedata_s *binary, size_t symsize, Elf64_Sym *symtab);
 
 
 int	parse_class64(struct filedata_s *binary)
@@ -79,33 +79,34 @@ int	parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary)
 			strtab = (char *)((uint8_t *)ehdr + sht[i].sh_offset);
 	}
 	if (symtab == NULL || strtab == NULL
-			|| alloc_ptrsym64(binary, symsize / sizeof(Elf64_Sym)) == FAILURE)
+			|| alloc_ptrsym64(binary, symsize, symtab) == FAILURE)
 		return FAILURE;
 	binary->strtab = strtab;
-	for	(size_t i = 0; i < symsize / sizeof(Elf64_Sym); i++) {
+	for (size_t i = 0, y = 0; i < symsize / sizeof(Elf64_Sym); i++) {
 //		ft_printf("%s\n", strtab + symtab[i].st_name);
-		binary->symtab[i] = symtab + i;
+		if (ELF64_ST_TYPE(symtab[i].st_info) != STT_FILE && symtab[i].st_name != '\00')
+			binary->symtab[y++] = symtab + i;
 	}
-	for	(size_t i = 0; i < symsize / sizeof(Elf64_Sym); i++)
-		ft_printf("%s\n", binary->strtab + ((Elf64_Sym **)binary->symtab)[i]->st_name);
+	for	(size_t i= 0; ((Elf64_Sym **)binary->symtab)[i]; i++)
+		ft_printf("%s\n", binary->strtab + ((Elf64_Sym **)binary->symtab)[i]->st_name); // FOR FUTUR PRINT
 	return SUCCESS;
 }
 
 
-int	alloc_ptrsym64(struct filedata_s *binary, size_t size)
+int	alloc_ptrsym64(struct filedata_s *binary, size_t symsize, Elf64_Sym *symtab)
 {
+	int size = symsize / sizeof(Elf64_Sym);
+
+	for (size_t i = 0; i < symsize / sizeof(Elf64_Sym); i++) {
+		if (ELF64_ST_TYPE(symtab[i].st_info) == STT_FILE || symtab[i].st_name == '\00')
+			size--;
+	}
 	binary->symtab = malloc(sizeof(Elf64_Sym *) * (size + 1));
 	if (!binary->symtab)
 		return FAILURE;
 	binary->symtab[size] = NULL;
 	return SUCCESS;
 }
-
-
-
-
-
-
 
 
 
