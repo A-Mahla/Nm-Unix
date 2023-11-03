@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:33:41 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/02 15:47:06 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/03 15:00:04 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	open_file(struct filedata_s **binary, char *filename)
 	if ((*binary = malloc(sizeof(struct filedata_s))) == NULL)
 		goto err;
 	(*binary)->file = NULL;
+	(*binary)->symtab = NULL;
 	(*binary)->name = filename;
 	if (read_file(fd, *binary) == FAILURE)
 		goto exit_failure;

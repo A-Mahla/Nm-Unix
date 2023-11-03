@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:09:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/02 15:43:34 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/03 15:12:47 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@
 struct filedata_s {
 	struct stat	statbuf;
 	void		*file;
+	void		**symtab;
+	char		*strtab;
 	char		*name;
 	long int	size;
 	uint8_t		ei_class;

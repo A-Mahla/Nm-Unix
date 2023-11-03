@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:07:46 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/30 23:20:13 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/03 15:00:29 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	exit_free(struct filedata_s	*binary)
 {
 	if (binary && binary->file)
 		free(binary->file);
+	if (binary && binary->symtab)
+		free(binary->symtab);
 	if (binary)
 		free(binary);
 }

@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/30 22:34:49 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/01 01:57:49 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/03 14:32:07 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,14 @@
 # include "nm.h"
 
 
-bool	check_size(struct filedata_s *binary);
+bool	check_fatal_error(struct filedata_s *binary);
 void	err_parse(char *filename);
 
 
 int	parse_file(int ac, struct filedata_s *binary)
 {
-// To Delete if I have a checker on each symbol for oversize binary->size
-	if (!check_size(binary))
+	if (!check_fatal_error(binary))
 		goto err;
-//////////////////////////////////////////////
 	if (binary->ei_class == ELFCLASS32) {
 		if (parse_class32(binary) == FAILURE)
 			goto err;
@@ -47,7 +45,7 @@ void	err_parse(char *filename)
 
 
 // To Delete if I have a checker on each symbol for oversize binary->size
-bool	check_size(struct filedata_s *binary)
+bool	check_fatal_error(struct filedata_s *binary)
 {
 	if (binary->statbuf.st_size != binary->size) {
 		ft_dprintf(2, "ft_nm: '%s': Fatal Error\n", binary->name);
