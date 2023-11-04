@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/03 16:22:26 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/04 03:35:38 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,9 @@ bool	check_header64(long int binary_size, Elf64_Ehdr *ehdr)
 }
 
 
-
-
-
-void	which_bind(unsigned char bind);
-void	which_type(unsigned char type);
-void	which_other(unsigned char other);
+void	sort64(struct filedata_s *binary);
+void	ft_swap_ptr(void **ptr1, void **ptr2);
+int		ft_strcoll(char *str1, char *str2);
 
 
 int	parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary)
@@ -87,6 +84,8 @@ int	parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary)
 		if (ELF64_ST_TYPE(symtab[i].st_info) != STT_FILE && symtab[i].st_name != '\00')
 			binary->symtab[y++] = symtab + i;
 	}
+//	printf("%d\n", ft_strcoll("open_file", "open@GLIBC_2.2.5"));
+	sort64(binary);
 	for	(size_t i= 0; ((Elf64_Sym **)binary->symtab)[i]; i++)
 		ft_printf("%s\n", binary->strtab + ((Elf64_Sym **)binary->symtab)[i]->st_name); // FOR FUTUR PRINT
 	return SUCCESS;
@@ -109,12 +108,73 @@ int	alloc_ptrsym64(struct filedata_s *binary, size_t symsize, Elf64_Sym *symtab)
 }
 
 
+void	sort64(struct filedata_s *binary)
+{
+	Elf64_Sym	**symtab = (Elf64_Sym **)binary->symtab;
+	char		*strtab = binary->strtab;
+
+	for (size_t i = 0;  symtab[i]; i++) {
+		for (size_t y = i + 1;  symtab[y]; y++) {
+			if (ft_strcoll(strtab + symtab[i]->st_name, strtab + symtab[y]->st_name) > 0)
+				ft_swap_ptr((void *)(symtab + i), (void *)(symtab + y));
+		}
+	}
+}
 
 
+int	ft_strcoll(char *str1, char *str2)
+{
+	char	c1, c2;
+	size_t	i = 0, y = 0;
+	int		f1 = 0, f2 = 0;
+	bool	upper1 = false, upper2 = false;
+
+	while (str1[i] && str1[i] == '_') {
+		f1++;
+		i++;
+	}
+	while (str2[y] && str2[y] == '_') {
+		f2++;
+		y++;
+	}
+	c1 = str1[i];
+	c2 = str2[y];
+	while (str1[i] && str2[y]) {
+		if (c1 >= 'A' && c1 <= 'Z' && c2 >= 'a' && c2 <= 'z') {
+			c1 += 32;
+			upper1 = true;
+		}
+		if (c2 >= 'A' && c2 <= 'Z' && c1 >= 'a' && c1 <= 'z') {
+			c2 += 32;
+			upper2 = true;
+		}
+		if (c1 != c2 )
+			break;
+		i++;
+		y++;
+		c1 = str1[i];
+		c2 = str2[y];
+	}
+	if (c1 == '\0' && c2 == '\0' && (f1 > f2 || (!upper1 && upper2)))
+		return -1;
+	if (c1 == '\0' && c2 == '\0' && (f1 < f2 || (upper1 && !upper2)))
+		return 1;
+	if (c1 == '@' && c2 != '@')
+		return 1;
+	if (c1 != '@' && c2 == '@')
+		return -1;
+	return c1 - c2;
+}
 
 
+void	ft_swap_ptr(void **ptr1, void **ptr2)
+{
+	void	*tmp;
 
-
+	tmp = *ptr1;
+	*ptr1 = *ptr2;
+	*ptr2 = tmp;
+}
 
 
 
@@ -211,39 +271,39 @@ int	alloc_ptrsym64(struct filedata_s *binary, size_t symsize, Elf64_Sym *symtab)
 //	}
 //}
 
-void	which_type(unsigned char type)
-{
-	if (type == STT_NOTYPE)
-		printf("NOTYPE => ");
-	if (type == STT_SECTION)
-		printf("SECTION => ");
-	if (type == STT_FILE)
-		printf("FILE => ");
-	if (type == STT_FUNC)
-		printf("FUNC => ");
-	if (type == STT_OBJECT)
-		printf("OBJECT => ");
-}
-
-void	which_bind(unsigned char bind)
-{
-	if (bind == STB_LOCAL)
-		printf("LOCAL => ");
-	if (bind == STB_GLOBAL)
-		printf("GLOBAL => ");
-	if (bind == STB_WEAK)
-		printf("WEAK => ");
-}
-
-void	which_other(unsigned char other)
-{
-	if (other == STV_DEFAULT)
-		printf("DEFAULT => ");
-	if (other == STV_INTERNAL)
-		printf("INTERNAL => ");
-	if (other == STV_HIDDEN)
-		printf("HIDDEN => ");
-	if (other == STV_PROTECTED)
-		printf("PROTECTED => ");
-
-}
+//void	which_type(unsigned char type)
+//{
+//	if (type == STT_NOTYPE)
+//		printf("NOTYPE => ");
+//	if (type == STT_SECTION)
+//		printf("SECTION => ");
+//	if (type == STT_FILE)
+//		printf("FILE => ");
+//	if (type == STT_FUNC)
+//		printf("FUNC => ");
+//	if (type == STT_OBJECT)
+//		printf("OBJECT => ");
+//}
+//
+//void	which_bind(unsigned char bind)
+//{
+//	if (bind == STB_LOCAL)
+//		printf("LOCAL => ");
+//	if (bind == STB_GLOBAL)
+//		printf("GLOBAL => ");
+//	if (bind == STB_WEAK)
+//		printf("WEAK => ");
+//}
+//
+//void	which_other(unsigned char other)
+//{
+//	if (other == STV_DEFAULT)
+//		printf("DEFAULT => ");
+//	if (other == STV_INTERNAL)
+//		printf("INTERNAL => ");
+//	if (other == STV_HIDDEN)
+//		printf("HIDDEN => ");
+//	if (other == STV_PROTECTED)
+//		printf("PROTECTED => ");
+//
+//}
