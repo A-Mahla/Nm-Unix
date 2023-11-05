@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/11/05 02:37:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/05 02:42:10 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/05 03:07:43 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,49 +14,60 @@
 # include "nm.h"
 
 
+void	which_type(unsigned char type);
+void	which_bind(unsigned char bind);
+void	which_other(unsigned char other);
+
+
 void	print_symbols(struct filedata_s *binary)
 {
-	for	(size_t i= 0; ((Elf64_Sym **)binary->symtab)[i]; i++) {
-		ft_printf("%016x ", ((Elf64_Sym **)binary->symtab)[i]->st_value); 
-		ft_printf("%s\n", binary->strtab + ((Elf64_Sym **)binary->symtab)[i]->st_name);
+	Elf64_Sym	**symtab = (Elf64_Sym **)binary->symtab;
+	
+	for	(size_t i= 0; symtab[i]; i++) {
+		ft_printf("%016x ", symtab[i]->st_value); 
+		ft_printf("%s\n", binary->strtab + symtab[i]->st_name);
 	}
 
 }
 
 
-//void	which_type(unsigned char type)
-//{
-//	if (type == STT_NOTYPE)
-//		printf("NOTYPE => ");
-//	if (type == STT_SECTION)
-//		printf("SECTION => ");
-//	if (type == STT_FILE)
-//		printf("FILE => ");
-//	if (type == STT_FUNC)
-//		printf("FUNC => ");
-//	if (type == STT_OBJECT)
-//		printf("OBJECT => ");
-//}
-//
-//void	which_bind(unsigned char bind)
-//{
-//	if (bind == STB_LOCAL)
-//		printf("LOCAL => ");
-//	if (bind == STB_GLOBAL)
-//		printf("GLOBAL => ");
-//	if (bind == STB_WEAK)
-//		printf("WEAK => ");
-//}
-//
-//void	which_other(unsigned char other)
-//{
-//	if (other == STV_DEFAULT)
-//		printf("DEFAULT => ");
-//	if (other == STV_INTERNAL)
-//		printf("INTERNAL => ");
-//	if (other == STV_HIDDEN)
-//		printf("HIDDEN => ");
-//	if (other == STV_PROTECTED)
-//		printf("PROTECTED => ");
-//
-//}
+//		which_type(ELF64_ST_TYPE(symtab[i]->st_info));
+//		which_bind(ELF64_ST_BIND(symtab[i]->st_info));
+//		which_other(ELF64_ST_VISIBILITY(symtab[i]->st_other));
+
+void	which_type(unsigned char type)
+{
+	if (type == STT_NOTYPE)
+		ft_printf("NOTYPE => ");
+	if (type == STT_SECTION)
+		ft_printf("SECTION => ");
+	if (type == STT_FILE)
+		ft_printf("FILE => ");
+	if (type == STT_FUNC)
+		ft_printf("FUNC => ");
+	if (type == STT_OBJECT)
+		ft_printf("OBJECT => ");
+}
+
+void	which_bind(unsigned char bind)
+{
+	if (bind == STB_LOCAL)
+		ft_printf("LOCAL => ");
+	if (bind == STB_GLOBAL)
+		ft_printf("GLOBAL => ");
+	if (bind == STB_WEAK)
+		ft_printf("WEAK => ");
+}
+
+void	which_other(unsigned char other)
+{
+	if (other == STV_DEFAULT)
+		ft_printf("DEFAULT => ");
+	if (other == STV_INTERNAL)
+		ft_printf("INTERNAL => ");
+	if (other == STV_HIDDEN)
+		ft_printf("HIDDEN => ");
+	if (other == STV_PROTECTED)
+		ft_printf("PROTECTED => ");
+
+}
