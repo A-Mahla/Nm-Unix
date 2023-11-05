@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/30 22:34:49 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/03 14:32:07 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/05 02:36:24 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ bool	check_fatal_error(struct filedata_s *binary);
 void	err_parse(char *filename);
 
 
-int	parse_file(int ac, struct filedata_s *binary)
+int	parse_file(struct filedata_s *binary)
 {
 	if (!check_fatal_error(binary))
 		goto err;
@@ -29,8 +29,6 @@ int	parse_file(int ac, struct filedata_s *binary)
 		if (parse_class64(binary) == FAILURE)
 			goto err;
 	}
-	if (ac > 2)
-		ft_printf("\n%s:\n", binary->name);
 	return SUCCESS;
 err:
 	return FAILURE;

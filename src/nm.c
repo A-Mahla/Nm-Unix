@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:07:46 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/03 15:00:29 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/05 02:37:21 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,11 @@ int	nm(int ac, char *filename)
 
 	if (open_file(&binary, filename) == FAILURE)
 		goto exit_failure;
-	if (parse_file(ac, binary) == FAILURE)
+	if (parse_file(binary) == FAILURE)
 		goto exit_failure;
+	if (ac > 2)
+		ft_printf("\n%s:\n", binary->name);
+	print_symbols(binary);
 	exit_free(binary);
 	return SUCCESS;
 exit_failure:
