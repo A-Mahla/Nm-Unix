@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:33:41 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/03 15:00:04 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/06 03:24:10 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,13 @@ bool	check_magic(struct filedata_s *binary)
 	binary->ei_class = e_indent[EI_CLASS];
 	return true;
 err:
-	ft_dprintf(2, "ft_nm: '%s': file format not recognized\n", binary->name);
+	ft_dprintf(2, "nm: %s: file format not recognized\n", binary->name);
 	return false;
 }
 
 
 void	err_file(char *filename)
 {
-	ft_dprintf(2, "ft_nm: '%s': ", filename);
+	ft_dprintf(2, "nm: %s: ", filename);
 	perror(NULL);
 }

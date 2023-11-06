@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/30 22:34:49 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/05 02:36:24 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/06 03:24:59 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ err:
 
 void	err_parse(char *filename)
 {
-	ft_dprintf(2, "ft_nm: '%s': file too short\n", filename);
-	ft_dprintf(2, "ft_nm: '%s': file format not recognized\n", filename);
+//	ft_dprintf(2, "ft_nm: '%s': file too short\n", filename);
+	ft_dprintf(2, "nm: %s: file format not recognized\n", filename);
 }
 
 
@@ -46,7 +46,7 @@ void	err_parse(char *filename)
 bool	check_fatal_error(struct filedata_s *binary)
 {
 	if (binary->statbuf.st_size != binary->size) {
-		ft_dprintf(2, "ft_nm: '%s': Fatal Error\n", binary->name);
+		ft_dprintf(2, "ft_nm: %s: Fatal Error\n", binary->name);
 		return false;
 	}
 	return true;

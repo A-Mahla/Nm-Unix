@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/05 02:45:48 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/06 03:22:19 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary)
 			strtab = (char *)((uint8_t *)ehdr + sht[i].sh_offset);
 	}
 	if (symtab == NULL || strtab == NULL) {
-		ft_dprintf(2, "ft_nm: %s: no symbols\n", binary->name);
+		ft_dprintf(2, "\n%s:\nnm: %s: no symbols\n", binary->name, binary->name);
 		return FAILURE;
 	}
 	if (alloc_ptrsym64(binary, symsize, symtab) == FAILURE)
@@ -96,7 +96,7 @@ int	alloc_ptrsym64(struct filedata_s *binary, size_t symsize, Elf64_Sym *symtab)
 	}
 	binary->symtab = malloc(sizeof(Elf64_Sym *) * (size + 1));
 	if (!binary->symtab) {
-		ft_dprintf(2, "ft_nm: %s: \n", binary->name);
+		ft_dprintf(2, "nm: %s: \n", binary->name);
 		perror(NULL);
 		return FAILURE;
 	}
