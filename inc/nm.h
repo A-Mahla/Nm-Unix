@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:09:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/06 17:56:55 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/06 23:09:03 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,19 @@
 # define ELF_MAGIC_SIZE 4
 # define ELF_MAGIC "\x7F\x45\x4C\x46"
 
+struct symtab_s {
+	Elf64_Sym	*ptr;
+	size_t		idx;
+};
 
 struct filedata_s {
-	struct stat	statbuf;
-	void		*file;
-	void		**symtab;
-	char		*strtab;
-	char		*name;
-	long int	size;
-	uint8_t		ei_class;
+	struct stat		statbuf;
+	void			*file;
+	struct symtab_s	*symtab;
+	char			*strtab;
+	char			*name;
+	long int		size;
+	uint8_t			ei_class;
 };
 
 

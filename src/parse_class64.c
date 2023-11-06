@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/06 18:00:07 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/06 23:12:14 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	alloc_ptrsym64(struct filedata_s *binary, size_t symsize, Elf64_Sym *symtab)
 		if (ELF64_ST_TYPE(symtab[i].st_info) == STT_FILE || symtab[i].st_name == '\00')
 			size--;
 	}
-	binary->symtab = malloc(sizeof(Elf64_Sym *) * (size + 1));
+	binary->symtab = malloc(sizeof(struct symtab_s) * (size + 1));
 	if (!binary->symtab) {
 		ft_dprintf(2, "nm: %s: \n", binary->name);
 		perror(NULL);
@@ -104,9 +104,11 @@ int	alloc_ptrsym64(struct filedata_s *binary, size_t symsize, Elf64_Sym *symtab)
 	}
 	for (size_t i = 0, y = 0; i < array_size; i++) {
 //		ft_printf("%s\n", strtab + symtab[i].st_name);
-		if (ELF64_ST_TYPE(symtab[i].st_info) != STT_FILE && symtab[i].st_name != '\00')
-			binary->symtab[y++] = symtab + i;
+		if (ELF64_ST_TYPE(symtab[i].st_info) != STT_FILE && symtab[i].st_name != '\00') {
+			binary->symtab[y].ptr = symtab + i;
+			binary->symtab[y++].idx = i;
+		}
 	}
-	binary->symtab[size] = NULL;
+	binary->symtab[size].ptr = NULL;
 	return SUCCESS;
 }

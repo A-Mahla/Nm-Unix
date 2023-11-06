@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/11/05 02:37:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/06 17:34:42 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/07 00:48:29 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,25 @@ void	which_type(unsigned char type);
 void	which_bind(unsigned char bind);
 void	which_other(unsigned char other);
 void	which_shtype(int type);
+void	which_flags(int flag);
+void	which_section(Elf64_Half section);
 
 char	print_letter64(Elf64_Sym *sym, Elf64_Ehdr *ehdr);
 
 
 void	print_symbols(struct filedata_s *binary)
 {
-	Elf64_Sym	**symtab = (Elf64_Sym **)binary->symtab;
+	struct symtab_s	*symtab = binary->symtab;
 	char		c;
 
-	for	(size_t i= 0; symtab[i]; i++) {
-		c = print_letter64(symtab[i], (Elf64_Ehdr *)binary->file);
+	for	(size_t i= 0; symtab[i].ptr; i++) {
+		c = print_letter64(symtab[i].ptr, (Elf64_Ehdr *)binary->file);
 		if (c != 'U' && c != 'v' && c != 'w')
-			ft_printf("%016x", symtab[i]->st_value); 
+			ft_printf("%016x", symtab[i].ptr->st_value); 
 		else
 			ft_printf("                ");
 		ft_printf(" %c ", c); 
-		ft_printf("%s\n", binary->strtab + symtab[i]->st_name);
+		ft_printf("%s\n", binary->strtab + symtab[i].ptr->st_name);
 	}
 }
 
@@ -60,18 +62,21 @@ char	print_letter64(Elf64_Sym *sym, Elf64_Ehdr *ehdr)
 	} else if (sym->st_shndx == SHN_UNDEF) {
 		return 'U';
 	} else if (sht[sym->st_shndx].sh_type == SHT_NOBITS
-		&& sht[sym->st_shndx].sh_flags == (SHF_ALLOC | SHF_WRITE)) {
+		&& (sht[sym->st_shndx].sh_flags == (SHF_ALLOC | SHF_WRITE)
+			|| sht[sym->st_shndx].sh_flags == (SHF_ALLOC | SHF_WRITE | SHF_TLS))) {
 		c = 'B';
 	} else if ((sht[sym->st_shndx].sh_type == SHT_PROGBITS
 		&& sht[sym->st_shndx].sh_flags == SHF_ALLOC)
 		|| sht[sym->st_shndx].sh_type == SHT_NOTE) {
 		c = 'R';
-	} else if ((sht[sym->st_shndx].sh_type == SHT_PROGBITS
-			|| sht[sym->st_shndx].sh_type == SHT_PREINIT_ARRAY
-			|| sht[sym->st_shndx].sh_type == SHT_INIT_ARRAY
-			|| sht[sym->st_shndx].sh_type == SHT_FINI_ARRAY
-			|| sht[sym->st_shndx].sh_type == SHT_DYNAMIC)
-		&& sht[sym->st_shndx].sh_flags == (SHF_ALLOC | SHF_WRITE)) {
+	} else if (((sht[sym->st_shndx].sh_type == SHT_PROGBITS
+				|| sht[sym->st_shndx].sh_type == SHT_PREINIT_ARRAY
+				|| sht[sym->st_shndx].sh_type == SHT_INIT_ARRAY
+				|| sht[sym->st_shndx].sh_type == SHT_FINI_ARRAY
+				|| sht[sym->st_shndx].sh_type == SHT_DYNAMIC)
+			&& sht[sym->st_shndx].sh_flags == (SHF_ALLOC | SHF_WRITE))
+		|| (sht[sym->st_shndx].sh_type == SHT_PROGBITS
+			&& sht[sym->st_shndx].sh_flags == (SHF_ALLOC | SHF_WRITE | SHF_TLS))) {
 		c = 'D';
 	} else if (sht[sym->st_shndx].sh_type == SHT_PROGBITS
 		&& sht[sym->st_shndx].sh_flags == (SHF_ALLOC | SHF_EXECINSTR)) {
@@ -92,9 +97,45 @@ char	print_letter64(Elf64_Sym *sym, Elf64_Ehdr *ehdr)
 //		which_bind(ELF64_ST_BIND(symtab[i]->st_info));
 //		which_other(ELF64_ST_VISIBILITY(symtab[i]->st_other));
 //
+//
+
+void	which_section(Elf64_Half section)
+{
+	if (section == SHN_UNDEF)
+		ft_printf("SHN_UNDEF =>");
+	if (section == SHN_LORESERVE)
+		ft_printf("SHN_LORESERVE =>");
+	if (section == SHN_LOPROC)
+		ft_printf("SHN_LOPROC =>");
+	if (section == SHN_BEFORE)
+		ft_printf("SHN_BEFORE =>");
+	if (section == SHN_AFTER)
+		ft_printf("SHN_AFTER =>");
+	if (section == SHN_HIPROC)
+		ft_printf("SHN_HIPROC =>");
+	if (section == SHN_ABS)
+		ft_printf("SHN_ABS =>");
+	if (section == SHN_COMMON)
+		ft_printf("SHN_COMMON =>");
+	if (section == SHN_HIRESERVE)
+		ft_printf("SHN_HIRESERVE =>");
+	ft_printf("NO_SECTION =>");
+}
+
+
+void	which_flags(int flag)
+{
+	if (flag == (SHF_ALLOC | SHF_WRITE))
+		ft_printf("SHF_ALLOC | SHF_WRITE => ");
+	if (flag == SHF_ALLOC)
+		ft_printf("SHF_ALLOC => ");
+	if (flag == (SHF_ALLOC | SHF_EXECINSTR))
+		ft_printf("SHF_ALLOC | SHF_EXECINSTR => ");
+}
+
+
 void	which_shtype(int type)
 {
-	ft_printf(" %d ", type);
 	if (type == SHT_NOBITS)
 		ft_printf("SHT_NOBITS => ");
 	if (type == SHT_PROGBITS)
