@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/06 18:05:46 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/06 19:05:45 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,10 @@ int	ft_strcoll(char *str1, char *str2)
 	underscore_counter(&str1, &f1, &i);
 	underscore_counter(&str2, &f2, &y);
 	for (;str1[i] && str2[y]; i++, y++) {
+		while (str1[i] == '@')
+			i++;
+		while (str2[y] == '@')
+			y++;
 		underscore_counter(&str1, &f1, &i);
 		underscore_counter(&str2, &f2, &y);
 		c1 = str1[i];
