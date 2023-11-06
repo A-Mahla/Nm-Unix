@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:07:46 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/06 01:33:23 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/06 17:58:52 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,18 @@
 int		nm(int ac, char *filename);
 void	exit_free(struct filedata_s	*binary);
 
+// TO DELETE
+void	testing(void);
+//
 
 int	main(int ac, char **av)
 {
 	int	ret = 0;
+
+//	TO DELETE
+//	testing();
+//	return 0;
+//
 
 	if (ac < 2)
 		nm(ret, "a.out");
@@ -38,7 +46,7 @@ int	nm(int ac, char *filename)
 
 	if (open_file(&binary, filename) == FAILURE)
 		goto exit_failure;
-	if (parse_file(binary) == FAILURE)
+	if (parse_file(binary, ac) == FAILURE)
 		goto exit_failure;
 	if (ac > 2)
 		ft_printf("\n%s:\n", binary->name);

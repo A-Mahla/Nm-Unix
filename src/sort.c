@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/06 04:11:21 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/06 18:05:46 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,12 @@ void	quicksort64(char *strtab, Elf64_Sym **symtab, size_t begin, size_t end)
 	}
 }
 
+// TO DELETE
+void	testing(void)
+{
+	ft_printf("%d\n", ft_strcoll("access@@GLIBC_2.2.5", "ACCESS_DESCRIPTION_free"));
+}
+//
 
 
 int	ft_strcoll(char *str1, char *str2)
@@ -106,35 +112,25 @@ int	ft_strcoll(char *str1, char *str2)
 
 	underscore_counter(&str1, &f1, &i);
 	underscore_counter(&str2, &f2, &y);
-	c1 = str1[i];
-	c2 = str2[y];
-	while (str1[i++] && str2[y++]) {
-		tolower_coll(&c1, c2, &upper1);
-		tolower_coll(&c2, c1, &upper2);
-		if (c1 != c2 )
-			break;
+	for (;str1[i] && str2[y]; i++, y++) {
 		underscore_counter(&str1, &f1, &i);
 		underscore_counter(&str2, &f2, &y);
-//		while (str1[i] == '_')
-//			i++;
-//		while (str2[y] == '_')
-//			y++;
 		c1 = str1[i];
 		c2 = str2[y];
+		tolower_coll(&c1, c2, &upper1);
+		tolower_coll(&c2, c1, &upper2);
+		if (c1 != c2)
+			return c1 - c2;
 	}
-	if (c1 == '\0' && c2 == '\0' && (f1 < f2 || upper1 > upper2))
+	if (str1[i] == '\0' && str2[y] == '\0' && (f1 < f2 || upper1 > upper2))
 		return 1;
-	if (c1 == '\0' && c2 == '\0' && (f1 > f2 || upper1 < upper2))
+	if (str1[i] == '\0' && str2[y] == '\0' && (f1 > f2 || upper1 < upper2))
 		return -1;
-	if (c1 == '@')
+	if (str1[i] == '_')
 		return 1;
-	if (c2 == '@')
+	if (str2[y] == '_')
 		return -1;
-//	if (c1 == '_')
-//		return 1;
-//	if (c2 == '_')
-//		return -1;
-	return c1 - c2;
+	return str1[i] - str2[y];
 }
 
 

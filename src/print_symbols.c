@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/11/05 02:37:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/06 04:20:38 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/06 17:34:42 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_symbols(struct filedata_s *binary)
 			ft_printf("%016x", symtab[i]->st_value); 
 		else
 			ft_printf("                ");
-		ft_printf(" %c ", print_letter64(symtab[i], (Elf64_Ehdr *)binary->file)); 
+		ft_printf(" %c ", c); 
 		ft_printf("%s\n", binary->strtab + symtab[i]->st_name);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/06 03:22:19 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/06 18:00:07 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 
 bool	check_header64(long int real_size, Elf64_Ehdr *ehdr);
-int		parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary);
+int		parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary, int ac);
 int		alloc_ptrsym64(struct filedata_s *binary, size_t symsize, Elf64_Sym *symtab);
 
 
-int	parse_class64(struct filedata_s *binary)
+int	parse_class64(struct filedata_s *binary, int ac)
 {
 	Elf64_Ehdr	*header = (Elf64_Ehdr *)binary->file;
 
@@ -27,7 +27,7 @@ int	parse_class64(struct filedata_s *binary)
 		err_parse(binary->name);
 		return FAILURE;
 	}
-	if (parse_symbol64(binary->file, binary) == FAILURE)
+	if (parse_symbol64(binary->file, binary, ac) == FAILURE)
 		return FAILURE;
 	return SUCCESS;
 }
@@ -56,7 +56,7 @@ bool	check_header64(long int binary_size, Elf64_Ehdr *ehdr)
 }
 
 
-int	parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary)
+int	parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary, int ac)
 {
 	Elf64_Shdr	*sht = (Elf64_Shdr *)((uint8_t *)ehdr + ehdr->e_shoff);
 	char		*shstrtab = (char *)((uint8_t *)ehdr + sht[ehdr->e_shstrndx].sh_offset);
@@ -74,7 +74,9 @@ int	parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary)
 			strtab = (char *)((uint8_t *)ehdr + sht[i].sh_offset);
 	}
 	if (symtab == NULL || strtab == NULL) {
-		ft_dprintf(2, "\n%s:\nnm: %s: no symbols\n", binary->name, binary->name);
+		if (ac > 2)
+			ft_dprintf(2, "\n%s:\n", binary->name);
+		ft_dprintf(2, "nm: %s: no symbols\n", binary->name, binary->name);
 		return FAILURE;
 	}
 	if (alloc_ptrsym64(binary, symsize, symtab) == FAILURE)
