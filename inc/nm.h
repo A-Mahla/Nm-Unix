@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:09:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/06 23:09:03 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 00:26:07 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		parse_class32(struct filedata_s *binary);
 int		parse_class64(struct filedata_s *binary, int ac);
 void	print_symbols(struct filedata_s *binary);
 void	err_parse(char *filename);
-void	sort(struct filedata_s *binary);
-
+void	quicksort64(char *strtab, struct symtab_s *symtab, size_t begin, size_t end);
+int		ft_strcoll(char *str1, char *str2);
 
 #endif

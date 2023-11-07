@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/06 23:12:14 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 00:36:32 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ int	parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary, int ac)
 	if (alloc_ptrsym64(binary, symsize, symtab) == FAILURE)
 		return FAILURE;
 	binary->strtab = strtab;
-	sort(binary);
 	return SUCCESS;
 }
 

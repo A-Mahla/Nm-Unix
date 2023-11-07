@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/30 22:34:49 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/06 17:57:24 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 00:45:57 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # include "nm.h"
 
 
+void	sort(struct filedata_s *binary);
+size_t	size_symtab(struct symtab_s *symtab);
 bool	check_fatal_error(struct filedata_s *binary);
 void	err_parse(char *filename);
 
@@ -29,9 +31,32 @@ int	parse_file(struct filedata_s *binary, int ac)
 		if (parse_class64(binary, ac) == FAILURE)
 			goto err;
 	}
+	sort(binary);
 	return SUCCESS;
 err:
 	return FAILURE;
+}
+
+
+void	sort(struct filedata_s *binary)
+{
+	struct symtab_s	*symtab = (struct symtab_s *)binary->symtab;
+	char		*strtab = binary->strtab;
+
+	if (binary->ei_class == ELFCLASS64)
+		quicksort64(strtab, symtab, 0, size_symtab(symtab) - 1);
+	else if (binary->ei_class == ELFCLASS32)
+		quicksort64(strtab, symtab, 0, size_symtab(symtab) - 1);
+}
+
+
+size_t	size_symtab(struct symtab_s *symtab)
+{
+	size_t	count = 0;
+
+	while(symtab[count].ptr)
+		count++;
+	return count;
 }
 
 
@@ -42,7 +67,6 @@ void	err_parse(char *filename)
 }
 
 
-// To Delete if I have a checker on each symbol for oversize binary->size
 bool	check_fatal_error(struct filedata_s *binary)
 {
 	if (binary->statbuf.st_size != binary->size) {
@@ -51,4 +75,3 @@ bool	check_fatal_error(struct filedata_s *binary)
 	}
 	return true;
 }
-//
