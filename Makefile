@@ -6,7 +6,7 @@
 #    By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+       #
 #                                              +#+    +#+   +#+     +#+        #
 #    Created: 2023/10/17 02:01:51 by amahla  #+#      #+#  #+#     #+#         #
-#    Updated: 2023/11/08 03:06:10 by amahla ###       ########     ########    #
+#    Updated: 2023/11/08 15:17:24 by amahla ###       ########     ########    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,13 +24,14 @@ SRC		:=	$(addprefix $(SRCDIR)/,	nm.c 				\
 									file_reader.c		\
 									file_parser.c		\
 									print_symbols.c		\
-									find_letter.c		\
 									utils.c				\
 									$(addprefix elf64/, parse_class64.c		\
 														quicksort64.c		\
+														find_letter64.c		\
 														)					\
 									$(addprefix elf32/, parse_class32.c		\
 														quicksort32.c		\
+														find_letter32.c		\
 														)					\
 									)
 OBJ		:=	$(SRC:.c=.o)
