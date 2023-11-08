@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:33:41 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 18:38:27 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 20:28:43 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static int	read_file(int fd, struct filedata_s *binary);
 static bool	check_magic(struct filedata_s *binary);
-static void	err_file(char *filename, bool is_directory);
+static void	err_file(char *filename, uint8_t is_special);
 
 
 int	open_file(struct filedata_s **binary, char *filename)
@@ -36,7 +36,7 @@ int	open_file(struct filedata_s **binary, char *filename)
 	close(fd);
 	return SUCCESS;
 err:
-	err_file(filename, false);
+	err_file(filename, 0);
 exit_failure:
 	return FAILURE;
 }
@@ -46,7 +46,7 @@ int	read_file(int fd, struct filedata_s *binary)
 {
 	int		rd;
 	int		count;
-	bool	is_directory = false;
+	uint8_t	is_special_err = 0;
 
 	if (fstat(fd, &binary->statbuf) < 0)
 		goto err;
@@ -56,7 +56,7 @@ int	read_file(int fd, struct filedata_s *binary)
 		goto err;
 	if ((rd = read(fd, binary->file, 64)) < 0) {
 		if (errno == EISDIR)
-			is_directory = true;
+			is_special_err = 1;
 		goto err;
 	}
 	binary->size = rd;
@@ -69,7 +69,7 @@ int	read_file(int fd, struct filedata_s *binary)
 		goto err;
 	return SUCCESS;
 err:
-	err_file(binary->name, is_directory);
+	err_file(binary->name, is_special_err);
 exit_failure:
 	return FAILURE;
 }
@@ -94,12 +94,14 @@ err:
 }
 
 
-void	err_file(char *filename, bool is_directory)
+void	err_file(char *filename, uint8_t is_special)
 {
-	if (!is_directory) {
+	if (!is_special) {
 		ft_dprintf(2, "nm: %s: ", filename);
 		perror(NULL);
-	} else {
+	} else if (is_special == 1) {
 		ft_dprintf(2, "nm: Warning: '%s' is a directory\n", filename);
+	} else if (is_special == 2) {
+		ft_dprintf(2, "nm: '%s': Permission denied\n", filename);
 	}
 }

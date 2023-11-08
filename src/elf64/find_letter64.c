@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/11/05 02:37:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 15:15:05 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 20:00:47 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,9 @@ static void	letter_R(Elf64_Word type, Elf64_Xword flags, char *c)
 				|| type == SHT_GNU_verneed
 				|| type == SHT_GNU_versym)
 			&& flags == SHF_ALLOC)
-		|| type == SHT_NOTE)
+		|| type == SHT_NOTE
+		|| (type == SHT_PROGBITS && flags == (SHF_ALLOC | SHF_MERGE))
+		|| (type == SHT_PROGBITS && flags == (SHF_ALLOC | SHF_MERGE | SHF_STRINGS)))
 		*c = 'R';
 }
 
@@ -127,8 +129,11 @@ static void	letter_D(Elf64_Word type, Elf64_Xword flags, char *c)
 
 static void	letter_T(Elf64_Word type, Elf64_Xword flags, char *c)
 {
-	if (type == SHT_PROGBITS
-		&& flags == (SHF_ALLOC | SHF_EXECINSTR))
+	if ((type == SHT_PROGBITS && flags == (SHF_ALLOC | SHF_EXECINSTR))
+		|| (type == SHT_PROGBITS
+			&& flags == (SHF_ALLOC | SHF_EXECINSTR | SHF_GROUP))
+		|| (type == SHT_PROGBITS
+			&& flags == (SHF_ALLOC | SHF_WRITE | SHF_EXECINSTR)))
 		*c = 'T';
 }
 

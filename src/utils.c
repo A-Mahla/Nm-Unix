@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 18:40:31 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 20:43:00 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # include "nm.h"
 
 
-static void	underscore_counter(char **str, size_t *count, size_t *index);
+static void	special_char_counter(char **str, size_t *count, size_t *index);
 static void	tolower_counter(char *c1, char c2, size_t *upper);
 
 
@@ -26,8 +26,8 @@ int	ft_strcoll(char *str1, char *str2)
 	size_t	upper1 = 0, upper2 = 0;
 
 	for (;str1[i] && str2[y]; i++, y++) {
-		underscore_counter(&str1, &f1, &i);
-		underscore_counter(&str2, &f2, &y);
+		special_char_counter(&str1, &f1, &i);
+		special_char_counter(&str2, &f2, &y);
 		c1 = str1[i];
 		c2 = str2[y];
 		tolower_counter(&c1, c2, &upper1);
@@ -53,11 +53,11 @@ int	ft_strcoll(char *str1, char *str2)
 }
 
 
-static void	underscore_counter(char **str, size_t *count, size_t *index)
+static void	special_char_counter(char **str, size_t *count, size_t *index)
 {
-	while ((*str)[*index] == '.' || (*str)[*index] == '@')
+	while ((*str)[*index] == '@')
 		(*index)++;
-	while ((*str)[*index] == '_') {
+	while ((*str)[*index] == '_' || (*str)[*index] == '.' ) {
 		(*count)++;
 		(*index)++;
 	}

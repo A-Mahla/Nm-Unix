@@ -53,3 +53,7 @@ dkms.conf
 
 # Binary
 *nm
+
+# testing files
+output_custom_nm
+output_libc_nm
