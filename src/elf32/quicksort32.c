@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 01:24:41 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 16:59:37 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # include "nm.h"
 
 
-size_t	partition32(char *strtab, struct symtab_s *symtab, size_t begin, size_t end)
+static size_t	partition(char *strtab, struct symtab_s *symtab, size_t begin, size_t end)
 {
 	struct symtab_s	pivot = symtab[end];
 	Elf32_Sym		*sym = NULL;
@@ -41,7 +41,7 @@ void	quicksort32(char *strtab, struct symtab_s *symtab, size_t begin, size_t end
 	int	pivot;
 
 	if (begin < end) {
-		pivot = partition32(strtab, symtab, begin, end);
+		pivot = partition(strtab, symtab, begin, end);
 		quicksort32(strtab, symtab, begin, pivot - 1);
 		quicksort32(strtab, symtab, pivot + 1, end);
 	}

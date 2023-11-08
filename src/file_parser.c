@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/30 22:34:49 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 01:36:03 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 17:00:01 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ int	parse_file(struct filedata_s *binary, int ac)
 	if (!check_fatal_error(binary))
 		return FAILURE;
 	if (binary->ei_class == ELFCLASS32) {
-		if (parse_class32(binary) == FAILURE)
+		if (parse_class32(binary, ac) == FAILURE)
 			return FAILURE;
 	} else {
 		if (parse_class64(binary, ac) == FAILURE)
 			return FAILURE;
 	}
-	sort(binary);
+	if (binary->strtab)
+		sort(binary);
 	return SUCCESS;
 }
 

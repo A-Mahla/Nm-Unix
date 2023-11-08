@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:09:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 03:04:36 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 17:00:27 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ struct filedata_s {
 
 int		open_file(struct filedata_s **binary, char *filename);
 int		parse_file(struct filedata_s *binary, int ac);
-int		parse_class32(struct filedata_s *binary);
+int		parse_class32(struct filedata_s *binary, int ac);
 int		parse_class64(struct filedata_s *binary, int ac);
 void	print_symbols(struct filedata_s *binary);
 char	find_letter64(Elf64_Sym *sym, Elf64_Ehdr *ehdr);

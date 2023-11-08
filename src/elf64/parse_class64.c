@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 00:36:32 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 16:49:48 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,28 @@
 # include "nm.h"
 
 
-bool	check_header64(long int real_size, Elf64_Ehdr *ehdr);
-int		parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary, int ac);
-int		alloc_ptrsym64(struct filedata_s *binary, size_t symsize, Elf64_Sym *symtab);
+static bool	check_header(long int real_size, Elf64_Ehdr *ehdr);
+static bool	check_symtab(Elf64_Shdr *sht, unsigned long int size);
+static int	parse_symbol(Elf64_Ehdr *ehdr, struct filedata_s *binary, int ac);
+static int	alloc_ptrsym(struct filedata_s *binary, size_t symsize, Elf64_Sym *symtab);
 
 
 int	parse_class64(struct filedata_s *binary, int ac)
 {
 	Elf64_Ehdr	*header = (Elf64_Ehdr *)binary->file;
 
-	if (!check_header64(binary->size, header)) {
+	if (!check_header(binary->size, header)) {
 		err_parse(binary->name);
 		return FAILURE;
 	}
-	if (parse_symbol64(binary->file, binary, ac) == FAILURE)
+	if (parse_symbol(binary->file, binary, ac) == FAILURE && binary->strtab)
 		return FAILURE;
 	return SUCCESS;
 }
 
 
-bool	check_header64(long int binary_size, Elf64_Ehdr *ehdr)
+static bool	check_header(long int binary_size, Elf64_Ehdr *ehdr)
 {
-	Elf64_Shdr	*sht = (Elf64_Shdr *) ((uint8_t *)ehdr + ehdr->e_shoff);
 	long int	size;
 
 	size = ehdr->e_phoff + ehdr->e_phentsize * ehdr->e_phnum;
@@ -44,19 +44,11 @@ bool	check_header64(long int binary_size, Elf64_Ehdr *ehdr)
 	size = ehdr->e_shoff + ehdr->e_shentsize * ehdr->e_shnum;
 	if (binary_size != size)
 		return false;
-	for (int i = 1; i < ehdr->e_shnum; i++) {
-		if (sht[i].sh_offset + sht[i].sh_size > (unsigned long int)binary_size) {
-			if (i + 1 < ehdr->e_shnum && sht[i].sh_offset == sht[i + 1].sh_offset 
-					&& sht[i].sh_offset < (unsigned long int)binary_size)
-				continue;
-			return false;
-		}
-	}
 	return true;
 }
 
 
-int	parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary, int ac)
+static int	parse_symbol(Elf64_Ehdr *ehdr, struct filedata_s *binary, int ac)
 {
 	Elf64_Shdr	*sht = (Elf64_Shdr *)((uint8_t *)ehdr + ehdr->e_shoff);
 	char		*shstrtab = (char *)((uint8_t *)ehdr + sht[ehdr->e_shstrndx].sh_offset);
@@ -66,6 +58,8 @@ int	parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary, int ac)
 
 	for (int i = 0; i < ehdr->e_shnum; ++i) {
 //		ft_printf("%s\n", shstrtab + sht[i].sh_name);
+		if (i + 1 < ehdr->e_shnum && !check_symtab(sht + i, binary->size))
+			goto err_no_symbols;
 		if (ft_strncmp(shstrtab + sht[i].sh_name, ".symtab", ft_strlen(".symtab")) == 0) {
 			symtab = (Elf64_Sym *)((uint8_t *)ehdr + sht[i].sh_offset);
 			symsize = sht[i].sh_size;
@@ -73,20 +67,32 @@ int	parse_symbol64(Elf64_Ehdr *ehdr, struct filedata_s *binary, int ac)
 		if (ft_strncmp(shstrtab + sht[i].sh_name, ".strtab", ft_strlen(".strtab")) == 0)
 			strtab = (char *)((uint8_t *)ehdr + sht[i].sh_offset);
 	}
-	if (symtab == NULL || strtab == NULL) {
-		if (ac > 2)
-			ft_dprintf(2, "\n%s:\n", binary->name);
-		ft_dprintf(2, "nm: %s: no symbols\n", binary->name, binary->name);
-		return FAILURE;
-	}
-	if (alloc_ptrsym64(binary, symsize, symtab) == FAILURE)
-		return FAILURE;
 	binary->strtab = strtab;
+	if (symtab == NULL || strtab == NULL)
+		goto err_no_symbols;
+	if (alloc_ptrsym(binary, symsize, symtab) == FAILURE)
+		return FAILURE;
 	return SUCCESS;
+err_no_symbols:
+	if (ac > 2)
+		ft_dprintf(2, "\n%s:\n", binary->name);
+	ft_dprintf(2, "nm: %s: no symbols\n", binary->name, binary->name);
+	return FAILURE;
 }
 
 
-int	alloc_ptrsym64(struct filedata_s *binary, size_t symsize, Elf64_Sym *symtab)
+static bool	check_symtab(Elf64_Shdr *sht, unsigned long int size)
+{
+	if (sht[0].sh_offset + sht[0].sh_size > size) {
+		if (sht[0].sh_offset == sht[1].sh_offset && sht[0].sh_offset < size)
+			return true;
+		return false;
+	}
+	return true;
+}
+
+
+static int	alloc_ptrsym(struct filedata_s *binary, size_t symsize, Elf64_Sym *symtab)
 {
 	size_t	array_size = symsize / sizeof(Elf64_Sym);
 	size_t	size = array_size;
