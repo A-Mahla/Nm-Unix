@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:09:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 00:26:07 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 03:04:36 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@
 # define ELF_MAGIC "\x7F\x45\x4C\x46"
 
 struct symtab_s {
-	Elf64_Sym	*ptr;
-	size_t		idx;
+	void	*ptr;
+	size_t	idx;
 };
 
 struct filedata_s {
@@ -56,8 +56,12 @@ int		parse_file(struct filedata_s *binary, int ac);
 int		parse_class32(struct filedata_s *binary);
 int		parse_class64(struct filedata_s *binary, int ac);
 void	print_symbols(struct filedata_s *binary);
-void	err_parse(char *filename);
+char	find_letter64(Elf64_Sym *sym, Elf64_Ehdr *ehdr);
+char	find_letter32(Elf32_Sym *sym, Elf32_Ehdr *ehdr);
 void	quicksort64(char *strtab, struct symtab_s *symtab, size_t begin, size_t end);
+void	quicksort32(char *strtab, struct symtab_s *symtab, size_t begin, size_t end);
 int		ft_strcoll(char *str1, char *str2);
+void	swap_sym(struct symtab_s *sym1, struct symtab_s *sym2);
+void	err_parse(char *filename);
 
 #endif

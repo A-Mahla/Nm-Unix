@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   ft_strcoll.c                                    :+:       :+: :+: :+:    */
+/*   utils.c                                         :+:       :+: :+: :+:    */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 00:14:07 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 01:20:25 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,17 @@ void	tolower_counter(char *c1, char c2, size_t *upper)
 		*c1 += 32;
 		(*upper)++;
 	}
+}
+
+
+void	swap_sym(struct symtab_s *sym1, struct symtab_s *sym2)
+{
+	struct symtab_s tmp;
+
+	tmp.ptr = sym1->ptr;
+	tmp.idx = sym1->idx;
+	sym1->ptr = sym2->ptr;
+	sym1->idx = sym2->idx;
+	sym2->ptr = tmp.ptr;
+	sym2->idx = tmp.idx;
 }

@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/11/05 02:37:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/07 00:48:29 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 03:01:50 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,189 +14,51 @@
 # include "nm.h"
 
 
-void	which_type(unsigned char type);
-void	which_bind(unsigned char bind);
-void	which_other(unsigned char other);
-void	which_shtype(int type);
-void	which_flags(int flag);
-void	which_section(Elf64_Half section);
-
 char	print_letter64(Elf64_Sym *sym, Elf64_Ehdr *ehdr);
+void	print_symbol64(struct symtab_s *symtab, struct filedata_s *binary);
+void	print_symbol32(struct symtab_s *symtab, struct filedata_s *binary);
 
 
 void	print_symbols(struct filedata_s *binary)
 {
-	struct symtab_s	*symtab = binary->symtab;
-	char		c;
+	if (binary->ei_class == ELFCLASS64)
+		print_symbol64(binary->symtab, binary);
+	else if (binary->ei_class == ELFCLASS32)
+		print_symbol32(binary->symtab, binary);
+}
 
-	for	(size_t i= 0; symtab[i].ptr; i++) {
-		c = print_letter64(symtab[i].ptr, (Elf64_Ehdr *)binary->file);
+
+void	print_symbol64(struct symtab_s *symtab, struct filedata_s *binary)
+{
+	Elf64_Sym		*sym64 = NULL;
+	char			c;
+
+	for	(size_t i = 0; symtab[i].ptr; i++) {
+		sym64 = (Elf64_Sym *)symtab[i].ptr;
+		c = find_letter64(sym64, (Elf64_Ehdr *)binary->file);
 		if (c != 'U' && c != 'v' && c != 'w')
-			ft_printf("%016x", symtab[i].ptr->st_value); 
+			ft_printf("%016x", sym64->st_value); 
 		else
 			ft_printf("                ");
 		ft_printf(" %c ", c); 
-		ft_printf("%s\n", binary->strtab + symtab[i].ptr->st_name);
+		ft_printf("%s\n", binary->strtab + sym64->st_name);
 	}
 }
 
 
-char	print_letter64(Elf64_Sym *sym, Elf64_Ehdr *ehdr)
+void	print_symbol32(struct symtab_s *symtab, struct filedata_s *binary)
 {
-	Elf64_Shdr	*sht = (Elf64_Shdr *)((uint8_t *)ehdr + ehdr->e_shoff);
-	char		c;
+	Elf32_Sym		*sym32 = NULL;
+	char			c;
 
-	if (ELF64_ST_BIND(sym->st_info) == STB_GNU_UNIQUE) {
-		return 'u';
-	} else if (sym->st_shndx == SHN_ABS) {
-		return 'A';
-	} else if (ELF64_ST_BIND(sym->st_info) == STB_WEAK
-		&& ELF64_ST_TYPE(sym->st_info) == STT_OBJECT) {
-		if (sym->st_shndx == SHN_UNDEF)
-			return 'v';
-		return 'V';
-	} else if (ELF64_ST_BIND(sym->st_info) == STB_WEAK) {
-		if (sym->st_shndx == SHN_UNDEF)
-			return 'w';
-		return 'W';
-	} else if (sym->st_shndx == SHN_UNDEF) {
-		return 'U';
-	} else if (sht[sym->st_shndx].sh_type == SHT_NOBITS
-		&& (sht[sym->st_shndx].sh_flags == (SHF_ALLOC | SHF_WRITE)
-			|| sht[sym->st_shndx].sh_flags == (SHF_ALLOC | SHF_WRITE | SHF_TLS))) {
-		c = 'B';
-	} else if ((sht[sym->st_shndx].sh_type == SHT_PROGBITS
-		&& sht[sym->st_shndx].sh_flags == SHF_ALLOC)
-		|| sht[sym->st_shndx].sh_type == SHT_NOTE) {
-		c = 'R';
-	} else if (((sht[sym->st_shndx].sh_type == SHT_PROGBITS
-				|| sht[sym->st_shndx].sh_type == SHT_PREINIT_ARRAY
-				|| sht[sym->st_shndx].sh_type == SHT_INIT_ARRAY
-				|| sht[sym->st_shndx].sh_type == SHT_FINI_ARRAY
-				|| sht[sym->st_shndx].sh_type == SHT_DYNAMIC)
-			&& sht[sym->st_shndx].sh_flags == (SHF_ALLOC | SHF_WRITE))
-		|| (sht[sym->st_shndx].sh_type == SHT_PROGBITS
-			&& sht[sym->st_shndx].sh_flags == (SHF_ALLOC | SHF_WRITE | SHF_TLS))) {
-		c = 'D';
-	} else if (sht[sym->st_shndx].sh_type == SHT_PROGBITS
-		&& sht[sym->st_shndx].sh_flags == (SHF_ALLOC | SHF_EXECINSTR)) {
-		c = 'T';
-	} else if (ELF64_ST_TYPE(sym->st_info) == STT_COMMON) {
-		c = 'C';
-	} else {
-		return '?';
+	for	(size_t i = 0; symtab[i].ptr; i++) {
+		sym32 = (Elf32_Sym *)symtab[i].ptr;
+		c = find_letter32(sym32, (Elf32_Ehdr *)binary->file);
+		if (c != 'U' && c != 'v' && c != 'w')
+			ft_printf("%016x", sym32->st_value); 
+		else
+			ft_printf("                ");
+		ft_printf(" %c ", c); 
+		ft_printf("%s\n", binary->strtab + sym32->st_name);
 	}
-	if (ELF64_ST_BIND(sym->st_info) == STB_LOCAL)
-		c += 32;
-	return c;
-	
-}
-
-
-//		which_type(ELF64_ST_TYPE(symtab[i]->st_info));
-//		which_bind(ELF64_ST_BIND(symtab[i]->st_info));
-//		which_other(ELF64_ST_VISIBILITY(symtab[i]->st_other));
-//
-//
-
-void	which_section(Elf64_Half section)
-{
-	if (section == SHN_UNDEF)
-		ft_printf("SHN_UNDEF =>");
-	if (section == SHN_LORESERVE)
-		ft_printf("SHN_LORESERVE =>");
-	if (section == SHN_LOPROC)
-		ft_printf("SHN_LOPROC =>");
-	if (section == SHN_BEFORE)
-		ft_printf("SHN_BEFORE =>");
-	if (section == SHN_AFTER)
-		ft_printf("SHN_AFTER =>");
-	if (section == SHN_HIPROC)
-		ft_printf("SHN_HIPROC =>");
-	if (section == SHN_ABS)
-		ft_printf("SHN_ABS =>");
-	if (section == SHN_COMMON)
-		ft_printf("SHN_COMMON =>");
-	if (section == SHN_HIRESERVE)
-		ft_printf("SHN_HIRESERVE =>");
-	ft_printf("NO_SECTION =>");
-}
-
-
-void	which_flags(int flag)
-{
-	if (flag == (SHF_ALLOC | SHF_WRITE))
-		ft_printf("SHF_ALLOC | SHF_WRITE => ");
-	if (flag == SHF_ALLOC)
-		ft_printf("SHF_ALLOC => ");
-	if (flag == (SHF_ALLOC | SHF_EXECINSTR))
-		ft_printf("SHF_ALLOC | SHF_EXECINSTR => ");
-}
-
-
-void	which_shtype(int type)
-{
-	if (type == SHT_NOBITS)
-		ft_printf("SHT_NOBITS => ");
-	if (type == SHT_PROGBITS)
-		ft_printf("SHT_PROGBITS => ");
-	if (type == SHT_HASH)
-		ft_printf("SHT_HASH => ");
-	if (type == SHT_RELA)
-		ft_printf("SHT_RELA => ");
-	if (type == SHT_REL)
-		ft_printf("SHT_REL => ");
-	if (type == SHT_SYMTAB)
-		ft_printf("SHT_SYMTAB => ");
-	if (type == SHT_STRTAB)
-		ft_printf("SHT_STRTAB => ");
-	if (type == SHT_PREINIT_ARRAY)
-		ft_printf("SHT_PREINIT_ARRAY => ");
-	if (type == SHT_INIT_ARRAY)
-		ft_printf("SHT_INIT_ARRAY => ");
-	if (type == SHT_FINI_ARRAY)
-		ft_printf("SHT_FINI_ARRAY => ");
-	if (type == SHT_DYNSYM)
-		ft_printf("SHT_DYNSYM => ");
-	if (type == SHT_DYNAMIC)
-		ft_printf("SHT_DYNAMIC => ");
-
-}
-
-
-void	which_type(unsigned char type)
-{
-	if (type == STT_NOTYPE)
-		ft_printf("NOTYPE => ");
-	if (type == STT_SECTION)
-		ft_printf("SECTION => ");
-	if (type == STT_FILE)
-		ft_printf("FILE => ");
-	if (type == STT_FUNC)
-		ft_printf("FUNC => ");
-	if (type == STT_OBJECT)
-		ft_printf("OBJECT => ");
-}
-
-void	which_bind(unsigned char bind)
-{
-	if (bind == STB_LOCAL)
-		ft_printf("LOCAL => ");
-	if (bind == STB_GLOBAL)
-		ft_printf("GLOBAL => ");
-	if (bind == STB_WEAK)
-		ft_printf("WEAK => ");
-}
-
-void	which_other(unsigned char other)
-{
-	if (other == STV_DEFAULT)
-		ft_printf("DEFAULT => ");
-	if (other == STV_INTERNAL)
-		ft_printf("INTERNAL => ");
-	if (other == STV_HIDDEN)
-		ft_printf("HIDDEN => ");
-	if (other == STV_PROTECTED)
-		ft_printf("PROTECTED => ");
-
 }
