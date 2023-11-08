@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/30 22:34:49 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 17:00:01 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 18:38:14 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 # include "nm.h"
 
 
-void	sort(struct filedata_s *binary);
-size_t	size_symtab(struct symtab_s *symtab);
-bool	check_fatal_error(struct filedata_s *binary);
-void	err_parse(char *filename);
+static void		sort(struct filedata_s *binary);
+static size_t	size_symtab(struct symtab_s *symtab);
+static bool		check_fatal_error(struct filedata_s *binary);
+void			err_parse(char *filename);
 
 
 int	parse_file(struct filedata_s *binary, int ac)
@@ -37,7 +37,7 @@ int	parse_file(struct filedata_s *binary, int ac)
 }
 
 
-void	sort(struct filedata_s *binary)
+static void	sort(struct filedata_s *binary)
 {
 	struct symtab_s	*symtab = (struct symtab_s *)binary->symtab;
 	char			*strtab = binary->strtab;
@@ -49,7 +49,7 @@ void	sort(struct filedata_s *binary)
 }
 
 
-size_t	size_symtab(struct symtab_s *symtab)
+static size_t	size_symtab(struct symtab_s *symtab)
 {
 	size_t	count = 0;
 
@@ -59,18 +59,18 @@ size_t	size_symtab(struct symtab_s *symtab)
 }
 
 
-void	err_parse(char *filename)
-{
-//	ft_dprintf(2, "ft_nm: '%s': file too short\n", filename);
-	ft_dprintf(2, "nm: %s: file format not recognized\n", filename);
-}
-
-
-bool	check_fatal_error(struct filedata_s *binary)
+static bool	check_fatal_error(struct filedata_s *binary)
 {
 	if (binary->statbuf.st_size != binary->size) {
 		ft_dprintf(2, "ft_nm: %s: Fatal Error\n", binary->name);
 		return false;
 	}
 	return true;
+}
+
+
+void	err_parse(char *filename)
+{
+//	ft_dprintf(2, "ft_nm: '%s': file too short\n", filename);
+	ft_dprintf(2, "nm: %s: file format not recognized\n", filename);
 }

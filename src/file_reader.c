@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:33:41 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 17:03:25 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 18:38:27 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # include "nm.h"
 
 
-int		read_file(int fd, struct filedata_s *binary);
-bool	check_magic(struct filedata_s *binary);
-void	err_file(char *filename, bool is_directory);
+static int	read_file(int fd, struct filedata_s *binary);
+static bool	check_magic(struct filedata_s *binary);
+static void	err_file(char *filename, bool is_directory);
 
 
 int	open_file(struct filedata_s **binary, char *filename)

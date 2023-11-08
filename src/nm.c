@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:07:46 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 16:05:54 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 18:40:49 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # include "nm.h"
 
 
-int		nm(int ac, char *filename);
-void	exit_free(struct filedata_s	*binary);
+static int	nm(int ac, char *filename);
+static void	exit_free(struct filedata_s	*binary);
 
 
 int	main(int ac, char **av)
@@ -32,7 +32,7 @@ int	main(int ac, char **av)
 }
 
 
-int	nm(int ac, char *filename)
+static int	nm(int ac, char *filename)
 {
 	struct filedata_s	*binary = NULL;
 
@@ -54,7 +54,7 @@ exit_failure:
 }
 
 
-void	exit_free(struct filedata_s	*binary)
+static void	exit_free(struct filedata_s	*binary)
 {
 	if (binary && binary->file)
 		free(binary->file);

@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 01:20:25 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 18:40:31 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # include "nm.h"
 
 
-void	underscore_counter(char **str, size_t *count, size_t *index);
-void	tolower_counter(char *c1, char c2, size_t *upper);
+static void	underscore_counter(char **str, size_t *count, size_t *index);
+static void	tolower_counter(char *c1, char c2, size_t *upper);
 
 
 int	ft_strcoll(char *str1, char *str2)
@@ -53,7 +53,7 @@ int	ft_strcoll(char *str1, char *str2)
 }
 
 
-void	underscore_counter(char **str, size_t *count, size_t *index)
+static void	underscore_counter(char **str, size_t *count, size_t *index)
 {
 	while ((*str)[*index] == '.' || (*str)[*index] == '@')
 		(*index)++;
@@ -64,7 +64,7 @@ void	underscore_counter(char **str, size_t *count, size_t *index)
 }
 
 
-void	tolower_counter(char *c1, char c2, size_t *upper)
+static void	tolower_counter(char *c1, char c2, size_t *upper)
 {
 	if (*c1 >= 'A' && *c1 <= 'Z' && c2 >= 'a' && c2 <= 'z') {
 		*c1 += 32;
