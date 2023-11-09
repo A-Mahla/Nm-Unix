@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/11/05 02:37:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/09 15:58:17 by amahla           ###   ########.fr       */
+/*   Updated: 2023/11/09 20:04:03 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	letter_A(unsigned char info, Elf64_Half shndx, char *c)
 {
 	if (shndx == SHN_ABS) {
 		if (ELF64_ST_BIND(info) == STB_LOCAL)
-			*c = 'A';
+			*c = 'a';
 		else
 			*c = 'A';
 	}

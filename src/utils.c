@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/09 15:59:01 by amahla           ###   ########.fr       */
+/*   Updated: 2023/11/09 22:18:00 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # include "nm.h"
 
 
-static void	special_char_counter(char **str, size_t *count, size_t *index);
+//static void	special_char_counter(char **str, size_t *count, size_t *index);
+static void	special_char_counter(char **str, size_t *count, size_t *index, size_t *upper);
 static void	tolower_counter(char *c1, char c2, size_t *upper);
 
 
@@ -26,8 +27,8 @@ int	ft_strcoll(char *str1, char *str2)
 	size_t	upper1 = 0, upper2 = 0;
 
 	for (;str1[i] && str2[y]; i++, y++) {
-		special_char_counter(&str1, &f1, &i);
-		special_char_counter(&str2, &f2, &y);
+		special_char_counter(&str1, &f1, &i, &upper1);
+		special_char_counter(&str2, &f2, &y, &upper2);
 		c1 = str1[i];
 		c2 = str2[y];
 		tolower_counter(&c1, c2, &upper1);
@@ -53,12 +54,21 @@ int	ft_strcoll(char *str1, char *str2)
 }
 
 
-static void	special_char_counter(char **str, size_t *count, size_t *index)
+static void	special_char_counter(char **str, size_t *count, size_t *index, size_t *upper)
 {
-	while ((*str)[*index] == '@' || (*str)[*index] == '(' || (*str)[*index] == '*')
-		(*index)++;
-	while ((*str)[*index] == '_' || (*str)[*index] == '.' ) {
-		(*count)++;
+//	while ((*str)[*index] == '@' || (*str)[*index] == '(' || (*str)[*index] == ')'
+//			|| (*str)[*index] == '*' || (*str)[*index] == '_'
+//			|| (*str)[*index] == '.' || (*str)[*index] == '/'
+//			|| (*str)[*index] == '-') {
+//	while (!((*str)[*index] >= 'A' && (*str)[*index] <= 'Z')
+//			&& !((*str)[*index] >= 'a' && (*str)[*index] <= 'z')
+//			&& !((*str)[*index] >= '0' && (*str)[*index] <= '9') && (*str)[*index] != '$') {
+	(void)upper;
+	while (!ft_isalnum((*str)[*index]) && (*str)[*index] != '$') {
+		if ((*str)[*index] == '_' || (*str)[*index] == '.' || (*str)[*index] == '*')
+			(*count)++;
+//		if ((*str)[*index] == '*')
+//			(*count)--;
 		(*index)++;
 	}
 }

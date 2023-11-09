@@ -67,6 +67,7 @@ run_test() {
 # Run the tests
 echo -e "\n\e[1;44m\e[97m Automated NM Tests \e[0m\n"
 
+run_test "/usr/bin/docker" "/usr/bin/docker"
 run_test "`find /usr/bin | xargs`" "/usr/bin"
 run_test "/usr/lib/*" "/usr/lib"
 run_test "`find /usr/games | xargs`" "/usr/games"
