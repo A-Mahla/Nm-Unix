@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:33:41 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 20:28:43 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/08 23:56:45 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	open_file(struct filedata_s **binary, char *filename)
 err:
 	err_file(filename, 0);
 exit_failure:
+	close(fd);
 	return FAILURE;
 }
 
