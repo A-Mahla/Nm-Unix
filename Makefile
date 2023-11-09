@@ -6,7 +6,7 @@
 #    By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+       #
 #                                              +#+    +#+   +#+     +#+        #
 #    Created: 2023/10/17 02:01:51 by amahla  #+#      #+#  #+#     #+#         #
-#    Updated: 2023/11/08 15:17:24 by amahla ###       ########     ########    #
+#    Updated: 2023/11/09 02:15:51 by amahla ###       ########     ########    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,10 +52,13 @@ $(OUTDIR)	:
 	@mkdir -p $(addprefix $@/, $(addprefix $(SRCDIR)/, elf64))
 	@mkdir -p $(addprefix $@/, $(addprefix $(SRCDIR)/, elf32))
 
-.PHONY	: all debug clean fclean re
+.PHONY	: all debug test clean fclean re
 
 debug	: CFLAGS=-g3 -Wall -Werror -Wextra
 debug	: all
+
+test	: all
+	./tests/script.sh
 
 clean	:
 	@$(MAKE) clean -C $(LIBDIR) > /dev/null
@@ -63,7 +66,7 @@ clean	:
 
 fclean	: clean
 	@$(MAKE) fclean -C $(LIBDIR) > /dev/null
-	$(RM) $(NAME)
+	$(RM) $(NAME) ./tests/output
 
 re		: fclean
 	@$(MAKE) re -j -C $(LIBDIR) > /dev/null
