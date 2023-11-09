@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   file_reader.c                                   :+:       :+: :+: :+:    */
+/*   file_reader.c                                      :+:      :+:    :+:   */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:33:41 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 23:56:45 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/09 16:00:59 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static int	read_file(int fd, struct filedata_s *binary);
 static bool	check_magic(struct filedata_s *binary);
-static void	err_file(char *filename, uint8_t is_special);
+static void	err_file(char *filename);
 
 
 int	open_file(struct filedata_s **binary, char *filename)
@@ -36,7 +36,7 @@ int	open_file(struct filedata_s **binary, char *filename)
 	close(fd);
 	return SUCCESS;
 err:
-	err_file(filename, 0);
+	err_file(filename);
 exit_failure:
 	close(fd);
 	return FAILURE;
@@ -47,7 +47,6 @@ int	read_file(int fd, struct filedata_s *binary)
 {
 	int		rd;
 	int		count;
-	uint8_t	is_special_err = 0;
 
 	if (fstat(fd, &binary->statbuf) < 0)
 		goto err;
@@ -55,11 +54,8 @@ int	read_file(int fd, struct filedata_s *binary)
 		goto exit_failure;
 	if ((binary->file = malloc(binary->statbuf.st_size)) == NULL)
 		goto err;
-	if ((rd = read(fd, binary->file, 64)) < 0) {
-		if (errno == EISDIR)
-			is_special_err = 1;
+	if ((rd = read(fd, binary->file, 64)) < 0)
 		goto err;
-	}
 	binary->size = rd;
 	if (!check_magic(binary))
 		goto exit_failure;
@@ -70,7 +66,7 @@ int	read_file(int fd, struct filedata_s *binary)
 		goto err;
 	return SUCCESS;
 err:
-	err_file(binary->name, is_special_err);
+	err_file(binary->name);
 exit_failure:
 	return FAILURE;
 }
@@ -95,14 +91,14 @@ err:
 }
 
 
-void	err_file(char *filename, uint8_t is_special)
+void	err_file(char *filename)
 {
-	if (!is_special) {
+	if (errno == EISDIR) {
+		ft_dprintf(2, "nm: Warning: '%s' is a directory\n", filename);
+	} else if (errno == ENOENT) {
+		ft_dprintf(2, "nm: '%s': No such file\n", filename);
+	} else {
 		ft_dprintf(2, "nm: %s: ", filename);
 		perror(NULL);
-	} else if (is_special == 1) {
-		ft_dprintf(2, "nm: Warning: '%s' is a directory\n", filename);
-	} else if (is_special == 2) {
-		ft_dprintf(2, "nm: '%s': Permission denied\n", filename);
 	}
 }

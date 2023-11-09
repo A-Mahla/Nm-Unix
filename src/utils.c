@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   utils.c                                         :+:       :+: :+: :+:    */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 20:43:00 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/09 15:59:01 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	ft_strcoll(char *str1, char *str2)
 
 static void	special_char_counter(char **str, size_t *count, size_t *index)
 {
-	while ((*str)[*index] == '@')
+	while ((*str)[*index] == '@' || (*str)[*index] == '(' || (*str)[*index] == '*')
 		(*index)++;
 	while ((*str)[*index] == '_' || (*str)[*index] == '.' ) {
 		(*count)++;
