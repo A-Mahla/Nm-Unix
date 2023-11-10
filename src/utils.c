@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/10 15:38:15 by amahla           ###   ########.fr       */
+/*   Updated: 2023/11/10 16:01:23 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	special_char_counter(char **str, size_t *count, size_t *index, bool 
 //			|| (*str)[*index] == '*' || (*str)[*index] == '_'
 //			|| (*str)[*index] == '.' || (*str)[*index] == '/'
 //			|| (*str)[*index] == '-') {
-	if (!*check_number && ft_isdigit((*str)[*index]))/* && is_number((*str)))*/
+	if (!*check_number && ft_isdigit((*str)[*index])/* && is_number(*str)*/)
 		*check_number = true;
 	while ((*str)[*index] && !ft_isalnum((*str)[*index]) && (*str)[*index] != '$') {
 		if ((*str)[*index] == '/')
@@ -80,6 +80,8 @@ static void	special_char_counter(char **str, size_t *count, size_t *index, bool 
 			(*count)++;
 		if ((*str)[*index] == '*' && !*check_number)
 			(*count)++;
+		if ((*str)[*index] == ')' && *index - 1 != 0 && ft_isdigit((*str)[*index - 1]))
+			(*count)--;
 		(*index)++;
 	}
 }
