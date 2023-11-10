@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   nm.c                                            :+:       :+: :+: :+:    */
+/*   nm.c                                               :+:      :+:    :+:   */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:07:46 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/10 03:55:30 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/10 15:36:19 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ int	main(int ac, char **av)
 {
 	int	ret = 0;
 
-//	ft_printf("%d\n", ft_strcoll("crypto/ed25519.(*PublicKey).Equal", "crypto/ed25519.PublicKey.Equal")); // => -1
-//	ft_printf("%d\n", ft_strcoll("compress/flate.(*byFreq).Len", "compress/flate.byFreq.Len")); // => 1
+//	ft_printf("%d\n", ft_strcoll(
+//				"mime/multipart.(*writerOnly.1).Write",
+//				"mime/multipart.writerOnly.1.Write")
+//	); // => -1
 //	exit(0);
 
 	if (ac < 2)
