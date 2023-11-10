@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils.c                                         :+:       :+: :+: :+:    */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/09 22:18:00 by amahla           ###   ########.fr       */
+/*   Updated: 2023/11/10 02:52:01 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ int	ft_strcoll(char *str1, char *str2)
 		if (f1 > f2)
 			return -1;
 	}
-	if (str1[i] == '_')
-		return 1;
-	if (str2[y] == '_')
-		return -1;
+//	if (str1[i] == '_')
+//		return 1;
+//	if (str2[y] == '_')
+//		return -1;
 	return str1[i] - str2[y];
 }
 
@@ -63,8 +63,7 @@ static void	special_char_counter(char **str, size_t *count, size_t *index, size_
 //	while (!((*str)[*index] >= 'A' && (*str)[*index] <= 'Z')
 //			&& !((*str)[*index] >= 'a' && (*str)[*index] <= 'z')
 //			&& !((*str)[*index] >= '0' && (*str)[*index] <= '9') && (*str)[*index] != '$') {
-	(void)upper;
-	while (!ft_isalnum((*str)[*index]) && (*str)[*index] != '$') {
+	while ((*str)[*index] && !ft_isalnum((*str)[*index]) && (*str)[*index] != '$') {
 		if ((*str)[*index] == '_' || (*str)[*index] == '.' || (*str)[*index] == '*')
 			(*count)++;
 //		if ((*str)[*index] == '*')
