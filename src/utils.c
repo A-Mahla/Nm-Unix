@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/10 02:52:01 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/10 03:52:07 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,8 @@ static void	special_char_counter(char **str, size_t *count, size_t *index, size_
 //			|| (*str)[*index] == '*' || (*str)[*index] == '_'
 //			|| (*str)[*index] == '.' || (*str)[*index] == '/'
 //			|| (*str)[*index] == '-') {
-//	while (!((*str)[*index] >= 'A' && (*str)[*index] <= 'Z')
-//			&& !((*str)[*index] >= 'a' && (*str)[*index] <= 'z')
-//			&& !((*str)[*index] >= '0' && (*str)[*index] <= '9') && (*str)[*index] != '$') {
+	(void)upper;
+	(void)count;
 	while ((*str)[*index] && !ft_isalnum((*str)[*index]) && (*str)[*index] != '$') {
 		if ((*str)[*index] == '_' || (*str)[*index] == '.' || (*str)[*index] == '*')
 			(*count)++;

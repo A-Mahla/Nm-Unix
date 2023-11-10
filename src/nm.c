@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   nm.c                                               :+:      :+:    :+:   */
+/*   nm.c                                            :+:       :+: :+: :+:    */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:07:46 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/09 20:43:48 by amahla           ###   ########.fr       */
+/*   Updated: 2023/11/10 03:55:30 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ static void	exit_free(struct filedata_s	*binary);
 int	main(int ac, char **av)
 {
 	int	ret = 0;
+
+//	ft_printf("%d\n", ft_strcoll("crypto/ed25519.(*PublicKey).Equal", "crypto/ed25519.PublicKey.Equal")); // => -1
+//	ft_printf("%d\n", ft_strcoll("compress/flate.(*byFreq).Len", "compress/flate.byFreq.Len")); // => 1
+//	exit(0);
 
 	if (ac < 2)
 		nm(ret, "a.out");
