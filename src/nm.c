@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   nm.c                                               :+:      :+:    :+:   */
+/*   nm.c                                            :+:       :+: :+: :+:    */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:07:46 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/10 15:36:19 by amahla           ###   ########.fr       */
+/*   Updated: 2023/11/11 02:49:30 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,6 @@ static void	exit_free(struct filedata_s	*binary);
 int	main(int ac, char **av)
 {
 	int	ret = 0;
-
-//	ft_printf("%d\n", ft_strcoll(
-//				"mime/multipart.(*writerOnly.1).Write",
-//				"mime/multipart.writerOnly.1.Write")
-//	); // => -1
-//	exit(0);
 
 	if (ac < 2)
 		nm(ret, "a.out");

@@ -29,12 +29,12 @@ run_test() {
     if [ -e "$directory" ]; then
         echo -e "\n\e[1mRunning nm on files in \e[93m$directory\e[0m\e[0m\n---------------------------------"
 
-        (./ft_nm $command >> $custom_output 2>&1) &
+        (./ft_nm $command > $custom_output 2>&1) &
         local custom_pid=$!
         moving_ellipsis $custom_pid "\rCustom nm:  \e[94mRunning"
         echo -e "\rCustom nm:  \e[32mCompleted\e[0m"
 
-        (nm $command >> $libc_output 2>&1) &
+        (nm $command > $libc_output 2>&1) &
         local libc_pid=$!
         moving_ellipsis $custom_pid "\rSystem nm:  \e[94mRunning"
         echo -e "\rSystem nm:  \e[32mCompleted\e[0m"
@@ -68,6 +68,7 @@ run_test() {
 echo -e "\n\e[1;44m\e[97m Automated NM Tests \e[0m\n"
 
 run_test "/usr/bin/docker" "/usr/bin/docker"
+run_test "/usr/bin/node" "/usr/bin/node"
 run_test "`find /usr/bin | grep -v '/usr/bin/docker'  | xargs`" "/usr/bin"
 run_test "`find /usr/bin | xargs`" "/usr/bin"
 run_test "/usr/lib/*" "/usr/lib"
