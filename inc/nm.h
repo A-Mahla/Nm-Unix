@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/29 21:09:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 18:37:58 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/11 17:17:04 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 //# define EI_NIDENT 16 TO DELETE IF NOT USED
 # define ELF_MAGIC_SIZE 4
 # define ELF_MAGIC "\x7F\x45\x4C\x46"
+
 
 struct symtab_s {
 	void	*ptr;

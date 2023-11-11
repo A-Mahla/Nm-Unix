@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/11/05 02:37:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 20:01:01 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/11 18:18:45 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 
 static void	letter_u(unsigned char info, char *c);
-static void	letter_A(Elf32_Half shndx, char *c);
+static void	letter_A(unsigned char info, Elf32_Half shndx, char *c);
 static void	letter_VWU(unsigned char info, Elf32_Half shndx, char *c);
 static void	letter_B(Elf32_Word type, Elf32_Xword flags, char *c);
 static void	letter_R(Elf32_Word type, Elf32_Xword flags, char *c);
@@ -27,17 +27,19 @@ static void	letter_C(unsigned char info, char *c);
 char	find_letter32(Elf32_Sym *sym, Elf32_Ehdr *ehdr)
 {
 	Elf32_Shdr		*sht = (Elf32_Shdr *)((uint8_t *)ehdr + ehdr->e_shoff);
-	Elf32_Word		type = sht[sym->st_shndx].sh_type;
-	Elf32_Xword		flags = sht[sym->st_shndx].sh_flags;
 	Elf32_Half		shndx = sym->st_shndx;
+	Elf32_Word		type;
+	Elf32_Xword		flags;
 	unsigned char	info = sym->st_info;
 	char			c = '?';
 
 	letter_u(info, &c);
-	letter_A(shndx, &c);
+	letter_A(info, shndx, &c);
 	letter_VWU(info, shndx, &c);
-	if (c != '?')
+	if (c != '?' || !sht)
 		return c;
+	type = sht[sym->st_shndx].sh_type;
+	flags = sht[sym->st_shndx].sh_flags;
 	letter_B(type, flags, &c);
 	letter_R(type, flags, &c);
 	letter_D(type, flags, &c);
@@ -57,10 +59,14 @@ static void	letter_u(unsigned char info, char *c)
 }
 
 
-static void	letter_A(Elf32_Half shndx, char *c)
+static void	letter_A(unsigned char info, Elf32_Half shndx, char *c)
 {
-	if (shndx == SHN_ABS)
-		*c = 'A';
+	if (shndx == SHN_ABS) {
+		if (ELF32_ST_BIND(info) == STB_LOCAL)
+			*c = 'a';
+		else
+			*c = 'A';
+	}
 }
 
 

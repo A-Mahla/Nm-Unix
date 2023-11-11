@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/11 02:57:24 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/11 18:15:25 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 //static void	special_char_counter(char **str, size_t *count, size_t *index);
 static void	special_char_counter(char **str, size_t *count, size_t *index, bool *check_number);
 static void	tolower_counter(char *c1, char c2, size_t *upper);
+static int	comparator(int8_t c1, int8_t c2);
 
 
 int	ft_strcoll(char *str1, char *str2)
@@ -35,7 +36,7 @@ int	ft_strcoll(char *str1, char *str2)
 		tolower_counter(&c1, c2, &upper1);
 		tolower_counter(&c2, c1, &upper2);
 		if (c1 != c2)
-			return c1 - c2;
+			return comparator(c1, c2);
 	}
 	if (str1[i] == '\0' && str2[y] == '\0') {
 		if (upper1 > upper2)
@@ -47,16 +48,12 @@ int	ft_strcoll(char *str1, char *str2)
 		if (f1 > f2)
 			return -1;
 	}
-	return str1[i] - str2[y];
+	return comparator(str1[i], str2[y]);
 }
 
 
 static void	special_char_counter(char **str, size_t *count, size_t *index, bool *check_number)
 {
-//	while ((*str)[*index] == '@' || (*str)[*index] == '(' || (*str)[*index] == ')'
-//			|| (*str)[*index] == '*' || (*str)[*index] == '_'
-//			|| (*str)[*index] == '.' || (*str)[*index] == '/'
-//			|| (*str)[*index] == '-') {
 	if (!*check_number && ft_isdigit((*str)[*index]) && (*str)[*index + 1] == '.')
 		*check_number = true;
 	if (!*check_number && ft_isdigit((*str)[*index])
@@ -65,7 +62,7 @@ static void	special_char_counter(char **str, size_t *count, size_t *index, bool 
 	while ((*str)[*index] && !ft_isalnum((*str)[*index]) && (*str)[*index] != '$') {
 		if ((*str)[*index] == '/')
 			*check_number = false;
-		if ((*str)[*index] == '_' || (*str)[*index] == '.' /*|| (*str)[*index] == '*'*/)
+		if ((*str)[*index] == '_' || (*str)[*index] == '.')
 			(*count)++;
 		if ((*str)[*index] == '*' && !*check_number)
 			(*count)++;
@@ -95,4 +92,16 @@ void	swap_sym(struct symtab_s *sym1, struct symtab_s *sym2)
 	sym1->idx = sym2->idx;
 	sym2->ptr = tmp.ptr;
 	sym2->idx = tmp.idx;
+}
+
+
+static int	comparator(int8_t c1, int8_t c2)
+{
+	if (c1 < 0 && c2 >= 0) {
+		return 1;
+	} else if (c2 < 0 && c1 >= 0) {
+		return -1;
+	}
+	return c1 - c2;
+
 }

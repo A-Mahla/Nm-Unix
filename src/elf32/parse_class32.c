@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/08 20:05:55 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/11 18:18:35 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static bool	check_header(long int binary_size, Elf32_Ehdr *ehdr)
 	if (binary_size < size)
 		return false;
 	size = ehdr->e_shoff + ehdr->e_shentsize * ehdr->e_shnum;
-	if (binary_size != size)
+	if (binary_size < size)
 		return false;
 	return true;
 }
