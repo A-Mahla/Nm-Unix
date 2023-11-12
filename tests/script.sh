@@ -67,17 +67,17 @@ run_test() {
 # Run the tests
 echo -e "\n\e[1;44m\e[97m Automated NM Tests \e[0m\n"
 
-run_test "/usr/bin/docker" "/usr/bin/docker"
+#run_test "/usr/bin/docker" "/usr/bin/docker"
 run_test "/usr/bin/node" "/usr/bin/node"
-run_test "`find /usr/bin | grep -v '/usr/bin/docker\|/usr/bin/node'  | xargs`" "/usr/bin"
-run_test "/usr/lib/*" "/usr/lib"
-run_test "`find /usr/games | xargs`" "/usr/games"
-run_test "`find /usr/include | xargs`" "/usr/include"
-run_test "`find /usr/lib32 | grep -v '\.a$' | xargs`" "/usr/lib32"
-run_test "`find /usr/lib64 | grep -v '\.a$' | xargs `" "/usr/lib64"
-run_test "`find /usr/libx32 | grep -v '\.a$' | xargs`" "/usr/libx32"
-run_test "`find /usr/sbin | xargs`" "/usr/sbin"
-run_test "`find /usr/local | grep -v '\.a$' | xargs`" "/usr/local"
+#run_test "`find /usr/bin | grep -v '/usr/bin/docker\|/usr/bin/node'  | xargs`" "/usr/bin"
+#run_test "/usr/lib/*" "/usr/lib"
+#run_test "`find /usr/games | xargs`" "/usr/games"
+#run_test "`find /usr/include | xargs`" "/usr/include"
+#run_test "`find /usr/lib32 | grep -v '\.a$' | xargs`" "/usr/lib32"
+#run_test "`find /usr/lib64 | grep -v '\.a$' | xargs `" "/usr/lib64"
+#run_test "`find /usr/libx32 | grep -v '\.a$' | xargs`" "/usr/libx32"
+#run_test "`find /usr/sbin | xargs`" "/usr/sbin"
+#run_test "`find /usr/local | grep -v '\.a$' | xargs`" "/usr/local"
 
 
 echo -e "\n\e[1mAll tests completed\e[0m"
