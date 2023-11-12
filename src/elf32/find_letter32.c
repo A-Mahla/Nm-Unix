@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/11/05 02:37:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/11 18:18:45 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/12 20:19:40 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	find_letter32(Elf32_Sym *sym, Elf32_Ehdr *ehdr)
 	unsigned char	info = sym->st_info;
 	char			c = '?';
 
+	letter_C(info, &c);
 	letter_u(info, &c);
 	letter_A(info, shndx, &c);
 	letter_VWU(info, shndx, &c);
@@ -44,11 +45,17 @@ char	find_letter32(Elf32_Sym *sym, Elf32_Ehdr *ehdr)
 	letter_R(type, flags, &c);
 	letter_D(type, flags, &c);
 	letter_T(type, flags, &c);
-	letter_C(info, &c);
 	if (ELF32_ST_BIND(sym->st_info) == STB_LOCAL && c != '?')
 		c += 32;
 	return c;
 	
+}
+
+
+static void	letter_C(unsigned char info, char *c)
+{
+	if (ELF32_ST_TYPE(info) == STT_COMMON)
+		*c = 'C';
 }
 
 
@@ -88,7 +95,7 @@ static void	letter_VWU(unsigned char info, Elf32_Half shndx, char *c)
 	}
 }
 
-
+// 'B/b' => sections : .bss / .tbss
 static void	letter_B(Elf32_Word type, Elf32_Xword flags, char *c)
 {
 	if (type == SHT_NOBITS
@@ -98,6 +105,10 @@ static void	letter_B(Elf32_Word type, Elf32_Xword flags, char *c)
 }
 
 
+/* 'R/r' => sections : .rodata* / .dynamic / .dynstr /.dynsym /
+ *						.hash / .note / .rela* / .SUNW_move / .SUNW_reloc / 
+ *						.SUNW_syminfo / .SUNW_version
+ */
 static void	letter_R(Elf32_Word type, Elf32_Xword flags, char *c)
 {
 	if (((type == SHT_PROGBITS
@@ -119,6 +130,7 @@ static void	letter_R(Elf32_Word type, Elf32_Xword flags, char *c)
 }
 
 
+// 'D/d' => sections : .data* / .init_array / .preinit_array / .fini_array
 static void	letter_D(Elf32_Word type, Elf32_Xword flags, char *c)
 {
 	if (((type == SHT_PROGBITS
@@ -133,6 +145,7 @@ static void	letter_D(Elf32_Word type, Elf32_Xword flags, char *c)
 }
 
 
+// 'T/t' => sections : .text / .plt
 static void	letter_T(Elf32_Word type, Elf32_Xword flags, char *c)
 {
 	if ((type == SHT_PROGBITS && flags == (SHF_ALLOC | SHF_EXECINSTR))
@@ -141,11 +154,4 @@ static void	letter_T(Elf32_Word type, Elf32_Xword flags, char *c)
 		|| (type == SHT_PROGBITS
 			&& flags == (SHF_ALLOC | SHF_WRITE | SHF_EXECINSTR)))
 		*c = 'T';
-}
-
-
-static void	letter_C(unsigned char info, char *c)
-{
-	if (ELF32_ST_TYPE(info) == STT_COMMON)
-		*c = 'C';
 }
