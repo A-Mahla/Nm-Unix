@@ -1,5 +1,5 @@
 # NM-Unix: Decoding ELF Insights
-![mybadge](https://badgen.net/badge/SKILLS/%UNIX,%20ELF,%20C%20/red?scale=1.2)
+![mybadge](https://badgen.net/badge/SKILLS/%20UNIX,%20ELF,%20C%20/red?scale=1.2)
 
 #### This project aims to better understand ELF files and therefore Unix logic.
 
