@@ -222,15 +222,15 @@ symbol table index is a subscript into this array.
 ```
 
 #### Symbol TYPE: 
-- A/a: The symbol's value is absolute. SHN_ABS
-- B/a: The symbol is in the BSS data section. .bss
-- C/c: The symbol is common.  Common symbols are uninitialized data. SHN_COMMON
-- D/d: The symbol is in the initialized data section.
-- i: For PE format files this indicates that the symbol is in a section specific to the implementation of DLLs..
-- N: The symbol is a debugging symbol.
-- R/r: The symbol is in a read only data section.
-- T/t: The symbol is in the text (code) section.
-- U: The symbol is undefined.
-- u: The symbol is a unique global symbol.
-- V/v: The symbol is a weak object.  When a weak defined symbol is linked with a normal defined symbol, the normal defined symbol is used with no error. 
-- W/w: The symbol is a weak symbol that has not been specifically tagged as a weak object symbol. 
+- `A/a`: The symbol's value is absolute. SHN_ABS
+- `B/a`: The symbol is in the BSS data section. .bss
+- `C/c`: The symbol is common.  Common symbols are uninitialized data. SHN_COMMON
+- `D/d`: The symbol is in the initialized data section.
+- `i`: For PE format files this indicates that the symbol is in a section specific to the implementation of DLLs..
+- `N`: The symbol is a debugging symbol.
+- `R/r`: The symbol is in a read only data section.
+- `T/t`: The symbol is in the text (code) section.
+- `U`: The symbol is undefined.
+- `u`: The symbol is a unique global symbol.
+- `V/v`: The symbol is a weak object.  When a weak defined symbol is linked with a normal defined symbol, the normal defined symbol is used with no error. 
+- `W/w`: The symbol is a weak symbol that has not been specifically tagged as a weak object symbol. 
