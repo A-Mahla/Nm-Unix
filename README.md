@@ -23,7 +23,7 @@ To use it open your terminal and run these commands:
    - To use this custom nm:
 
       ```shell
-      ./ft_nm <file>
+      ./ft_nm <file1> <file2> ...
       ```
 
 <br>
