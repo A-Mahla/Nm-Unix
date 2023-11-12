@@ -92,7 +92,7 @@ The ELF header is described by the type Elf32_Ehdr or Elf64_Ehdr:
     } ElfN_Ehdr;
 ```
 
-##### ps:
+**ps:**
 ```
     e_shstrndx
             This member holds the section header table index of the
@@ -152,7 +152,7 @@ typedef struct {
            } Elf32_Shdr;
 ```
 
-##### ps:
+**ps:**
 ```
   sh_name
               This member specifies the name of the section.  Its value
