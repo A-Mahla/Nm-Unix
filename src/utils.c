@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   utils.c                                         :+:       :+: :+: :+:    */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/31 00:19:19 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/11 18:15:25 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/13 18:11:44 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # include "nm.h"
 
 
-//static void	special_char_counter(char **str, size_t *count, size_t *index);
 static void	special_char_counter(char **str, size_t *count, size_t *index, bool *check_number);
 static void	tolower_counter(char *c1, char c2, size_t *upper);
 static int	comparator(int8_t c1, int8_t c2);
@@ -55,9 +54,6 @@ int	ft_strcoll(char *str1, char *str2)
 static void	special_char_counter(char **str, size_t *count, size_t *index, bool *check_number)
 {
 	if (!*check_number && ft_isdigit((*str)[*index]) && (*str)[*index + 1] == '.')
-		*check_number = true;
-	if (!*check_number && ft_isdigit((*str)[*index])
-		&& (*str)[*index + 1] == '.' && (*str)[*index + 2] == '(')
 		*check_number = true;
 	while ((*str)[*index] && !ft_isalnum((*str)[*index]) && (*str)[*index] != '$') {
 		if ((*str)[*index] == '/')

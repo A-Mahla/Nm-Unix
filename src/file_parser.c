@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   file_parser.c                                   :+:       :+: :+: :+:    */
+/*   file_parser.c                                      :+:      :+:    :+:   */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/30 22:34:49 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/11 18:49:39 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/13 14:59:05 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,5 @@ static bool	check_fatal_error(struct filedata_s *binary)
 
 void	err_parse(char *filename)
 {
-//	ft_dprintf(2, "ft_nm: '%s': file too short\n", filename);
 	ft_dprintf(2, "nm: %s: file format not recognized\n", filename);
 }

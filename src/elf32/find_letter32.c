@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   find_letter32.c                                 :+:       :+: :+: :+:    */
+/*   find_letter32.c                                    :+:      :+:    :+:   */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/11/05 02:37:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/11/12 20:53:39 by amahla ###       ########     ########   */
+/*   Updated: 2023/11/13 16:38:20 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	letter_i(unsigned char info, char *c);
 static void	letter_u(unsigned char info, char *c);
 static void	letter_A(unsigned char info, Elf32_Half shndx, char *c);
 static void	letter_VWU(unsigned char info, Elf32_Half shndx, char *c);
-static void	letter_T(Elf32_Xword flags, char *c);
+static void	letter_T(Elf32_Xword flags, Elf32_Word type, Elf32_Half shndx, char *c);
 static void	letter_R(Elf32_Word type, Elf32_Xword flags, char *c);
 static void	letter_D(Elf32_Xword flags, char *c);
 static void	letter_B(Elf32_Word type, Elf32_Xword flags, char *c);
@@ -43,7 +43,7 @@ char	find_letter32(Elf32_Sym *sym, Elf32_Ehdr *ehdr)
 		return c;
 	type = sht[sym->st_shndx].sh_type;
 	flags = sht[sym->st_shndx].sh_flags;
-	letter_T(flags, &c);
+	letter_T(flags, type, shndx, &c);
 	letter_R(type, flags, &c);
 	letter_D(flags, &c);
 	letter_B(type, flags, &c);
@@ -106,11 +106,12 @@ static void	letter_VWU(unsigned char info, Elf32_Half shndx, char *c)
 
 
 // 'T/t' => sections : .text / .text group / .plt
-static void	letter_T(Elf32_Xword flags, char *c)
+static void	letter_T(Elf32_Xword flags, Elf32_Word type, Elf32_Half shndx, char *c)
 {
 	if (flags == (SHF_ALLOC | SHF_EXECINSTR)
 		|| flags == (SHF_ALLOC | SHF_EXECINSTR | SHF_GROUP)
-		||  flags == (SHF_ALLOC | SHF_WRITE | SHF_EXECINSTR))
+		||  flags == (SHF_ALLOC | SHF_WRITE | SHF_EXECINSTR)
+		|| (shndx == 16 && type == SHT_PROGBITS))
 		*c = 'T';
 }
 
